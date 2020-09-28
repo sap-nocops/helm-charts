@@ -78,6 +78,8 @@ config:
     rule: round-robin
 
   clusters:
+    sync:
+      delay: 600s
     statistics:
       enabled: true
       delay: 5s
