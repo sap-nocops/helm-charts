@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-configmap
+  labels:
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+data:
+  config.yml: |
+    {{- with .Values.config }}
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
