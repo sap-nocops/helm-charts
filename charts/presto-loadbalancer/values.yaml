@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: garugaru/presto-loadbalancer
-  tag: latest
+  tag: 8359d3622e718602df59302c1952e8b37e5171d9
   pullPolicy: Always
 
 imagePullSecrets: [ ]
