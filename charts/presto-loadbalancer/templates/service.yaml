@@ -4,8 +4,9 @@ metadata:
   name: {{ include "presto-loadbalancer.fullname" . }}
   labels:
     {{- include "presto-loadbalancer.labels" . | nindent 4 }}
+  {{- with .Values.service.annotations }}
   annotations:
-    {{- include ".Values.service.annotations" . | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
 
 spec:
   type: {{ .Values.service.type }}
