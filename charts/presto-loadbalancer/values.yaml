@@ -30,6 +30,8 @@ securityContext: { }
 # runAsUser: 1000
 
 service:
+  annotations:
+    test: true
   type: ClusterIP
   port: 80
 
