@@ -31,7 +31,7 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          args: ["proxy", "--config", "/config/config.yml"]
+          args: ["proxy", "--config", "/config/config.yml", "--static-files", "/ui"]
           volumeMounts:
             - name: config-volume
               mountPath: /config
