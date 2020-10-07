@@ -3,5 +3,5 @@ name: presto-loadbalancer
 description: Presto loadbalancer helm chart
 
 type: application
-version: 0.1.12
+version: 0.1.13
 appVersion: 0.1.5
