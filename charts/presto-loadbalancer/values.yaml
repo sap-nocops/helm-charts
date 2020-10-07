@@ -110,3 +110,10 @@ config:
           password: ''
           db: 0
 
+  discovery:
+    enabled: true
+    type: aws-emr
+    aws:
+      access_key_id: ''
+      secret_key: ''
+      region: 'eu-west-1'
