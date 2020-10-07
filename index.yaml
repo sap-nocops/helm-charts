@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   presto-loadbalancer:
   - apiVersion: v2
+    appVersion: 0.1.5
+    created: "2020-10-07T09:37:18.815094139Z"
+    description: Presto loadbalancer helm chart
+    digest: e16d7707403738c52ac12bea3cb0fc5edb7de5f16b4ac9f420ca7ccd56c642aa
+    name: presto-loadbalancer
+    type: application
+    urls:
+    - https://github.com/The-Data-Appeal-Company/helm-charts/releases/download/presto-loadbalancer-0.1.13/presto-loadbalancer-0.1.13.tgz
+    version: 0.1.13
+  - apiVersion: v2
     appVersion: 0.1.4
     created: "2020-10-06T15:59:09.457407389Z"
     description: Presto loadbalancer helm chart
