@@ -11,15 +11,15 @@ metadata:
     component: worker
 data:
   node.properties: |
-    node.environment={{ .Values.server.node.environment }}
-    node.data-dir={{ .Values.server.node.dataDir }}
-    plugin.dir={{ .Values.server.node.pluginDir }}
+    node.environment={{ .Values.presto.worker.config.node.environment }}
+    node.data-dir={{ .Values.presto.worker.config.node.dataDir }}
+    plugin.dir={{ .Values.presto.worker.config.node.pluginDir }}
 
   jvm.config: |
     -server
-    -Xmx{{ .Values.server.jvm.maxHeapSize }}
-    -XX:+{{ .Values.server.jvm.gcMethod.type }}
-    -XX:G1HeapRegionSize={{ .Values.server.jvm.gcMethod.g1.heapRegionSize }}
+    -Xmx{{ .Values.presto.worker.config.jvm.maxHeapSize }}
+    -XX:+{{ .Values.presto.worker.config.jvm.gcMethod.type }}
+    -XX:G1HeapRegionSize={{ .Values.presto.worker.config.jvm.gcMethod.g1.heapRegionSize }}
     -XX:+UseGCOverheadLimit
     -XX:+ExplicitGCInvokesConcurrent
     -XX:+HeapDumpOnOutOfMemoryError
@@ -28,17 +28,17 @@ data:
 
   config.properties: |
     coordinator=false
-    http-server.http.port={{ .Values.server.config.http.port }}
-    query.max-memory={{ .Values.server.config.query.maxMemory }}
-    query.max-memory-per-node={{ .Values.server.config.query.maxMemoryPerNode }}
-    discovery.uri=http://{{ template "presto.fullname" . }}:{{ .Values.server.config.http.port }}
+    http-server.http.port={{ .Values.presto.worker.config.server.port }}
+    query.max-memory={{ .Values.presto.query.maxMemory }}
+    query.max-memory-per-node={{ .Values.presto.query.maxMemoryPerNode }}
+    discovery.uri=http://{{ template "presto.fullname" . }}:{{ .Values.presto.coordinator.config.server.port }}
 
   log.properties: |
-    io.prestosql={{ .Values.server.log.presto.level }}
+    io.prestosql={{ .Values.presto.coordinator.config.server.loglevel }}
 
   health_check.sh: |
     #!/bin/bash 
-    curl --silent {{ template "presto.fullname" . }}:{{ .Values.server.config.http.port }}/v1/node | tr "," "\n" | grep --silent $(hostname -i)
+    curl --silent {{ template "presto.fullname" . }}:{{ .Values.presto.coordinator.config.server.port }}/v1/node | tr "," "\n" | grep --silent $(hostname -i)
 
 ---
-{{- end }}
+  {{- end }}

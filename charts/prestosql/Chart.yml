@@ -1,21 +1,12 @@
-# Patterns to ignore when building packages.
-# This supports shell glob matching, relative path matching, and
-# negation (prefixed with !). Only one pattern per line.
-.DS_Store
-# Common VCS dirs
-.git/
-.gitignore
-.bzr/
-.bzrignore
-.hg/
-.hgignore
-.svn/
-# Common backup files
-*.swp
-*.bak
-*.tmp
-*~
-# Various IDEs
-.project
-.idea/
-*.tmproj
+apiVersion: v1
+appVersion: 329
+description: Distributed SQL query engine for running interactive analytic queries
+name: presto
+version: 0.2.1
+home: https://prestosql.io
+icon: https://prestosql.io/docs/current/_static/presto.png
+sources:
+  - https://github.com/prestosql/presto
+maintainers:
+  - name: bivas
+    email: eliran.bivas@gmail.com

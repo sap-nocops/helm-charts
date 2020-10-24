@@ -10,15 +10,15 @@ metadata:
     component: coordinator
 data:
   node.properties: |
-    node.environment={{ .Values.server.node.environment }}
-    node.data-dir={{ .Values.server.node.dataDir }}
-    plugin.dir={{ .Values.server.node.pluginDir }}
+    node.environment={{ .Values.presto.coordinator.config.node.environment }}
+    node.data-dir={{ .Values.presto.coordinator.config.node.dataDir }}
+    plugin.dir={{ .Values.presto.coordinator.config.node.pluginDir }}
 
   jvm.config: |
     -server
-    -Xmx{{ .Values.server.jvm.maxHeapSize }}
-    -XX:+{{ .Values.server.jvm.gcMethod.type }}
-    -XX:G1HeapRegionSize={{ .Values.server.jvm.gcMethod.g1.heapRegionSize }}
+    -Xmx{{ .Values.presto.coordinator.config.jvm.maxHeapSize }}
+    -XX:+{{ .Values.presto.coordinator.config.jvm.gcMethod.type }}
+    -XX:G1HeapRegionSize={{ .Values.presto.coordinator.config.jvm.gcMethod.g1.heapRegionSize }}
     -XX:+UseGCOverheadLimit
     -XX:+ExplicitGCInvokesConcurrent
     -XX:+HeapDumpOnOutOfMemoryError
@@ -27,18 +27,14 @@ data:
 
   config.properties: |
     coordinator=true
-{{- if gt (int .Values.server.workers) 0 }}
     node-scheduler.include-coordinator=false
-{{- else }}
-    node-scheduler.include-coordinator=true
-{{- end }}
-    http-server.http.port={{ .Values.server.config.http.port }}
-    query.max-memory={{ .Values.server.config.query.maxMemory }}
-    query.max-memory-per-node={{ .Values.server.config.query.maxMemoryPerNode }}
+    http-server.http.port={{ .Values.presto.coordinator.config.server.port }}
+    query.max-memory={{ .Values.presto.query.maxMemory }}
+    query.max-memory-per-node={{ .Values.presto.query.maxMemoryPerNode }}
     discovery-server.enabled=true
-    discovery.uri=http://localhost:{{ .Values.server.config.http.port }}
+    discovery.uri=http://localhost:{{ .Values.presto.coordinator.config.server.port }}
 
   log.properties: |
-    io.prestosql={{ .Values.server.log.presto.level }}
+    io.prestosql={{ .Values.presto.coordinator.config.server.loglevel }}
 
 ---
