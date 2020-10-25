@@ -10,7 +10,7 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.server.config.http.port }}
+    - port: {{ .Values.presto.coordinator.config.server.port }}
       targetPort: http-coord
       protocol: TCP
       name: http-coord

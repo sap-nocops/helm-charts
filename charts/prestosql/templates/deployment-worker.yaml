@@ -26,27 +26,45 @@ spec:
         - name: config-volume
           configMap:
             name: {{ template "presto.worker" . }}
+        - name: connectors-config-volume
+          configMap:
+            name: {{ template "presto.connectors" . }}
+      terminationGracePeriodSeconds: 60
       containers:
+
         - name: {{ .Chart.Name }}-worker
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
             - mountPath: {{ .Values.presto.worker.config.path }}
               name: config-volume
-          livenessProbe:
-            exec:
-              command:
-                - /bin/bash
-                - {{ .Values.presto.worker.config.path }}/health_check.sh
-            initialDelaySeconds: 10
-            periodSeconds: 25
-          readinessProbe:
-            exec:
-              command:
-                - /bin/bash
-                - {{ .Values.presto.worker.config.path }}/health_check.sh
-            initialDelaySeconds: 5
-            periodSeconds: 10
+            - mountPath: {{ .Values.presto.worker.config.path }}/catalog
+              name: connectors-config-volume
+          # TODO recent presto version breaks the health check :(
+          #   livenessProbe:
+          #     exec:
+          #       command:
+          #         - /bin/bash
+          #         - {{ .Values.presto.worker.config.path }}/health_check.sh
+          #     initialDelaySeconds: 10
+          #     periodSeconds: 25
+          #   readinessProbe:
+          #     exec:
+          #       command:
+          #         - /bin/bash
+          #         - {{ .Values.presto.worker.config.path }}/health_check.sh
+          #     initialDelaySeconds: 5
+          #     periodSeconds: 10
+
+          {{ if .Values.presto.worker.config.gracefulShutdown.enabled }}
+          lifecycle:
+            preStop:
+              exec:
+                command: [
+                    "sh", "-c",
+                    "curl -v  -H \"X-Presto-User: admin\" -X PUT -d '\"SHUTTING_DOWN\"' -H \"Content-type: application/json\" http://localhost:8080/v1/info/state && sleep {{ .Values.presto.worker.config.gracefulShutdown.gracePeriodSeconds }}"
+                ]
+          {{end }}
           resources:
       {{ toYaml .Values.presto.worker.resources | indent 12 }}
       {{- with .Values.presto.worker.nodeSelector }}
@@ -59,5 +77,5 @@ spec:
       {{- end }}
       {{- with .Values.presto.worker.tolerations }}
       tolerations:
-    {{ toYaml . | indent 8 }}
+  {{ toYaml . | indent 8 }}
   {{- end }}

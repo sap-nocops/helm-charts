@@ -30,6 +30,9 @@ spec:
         - name: config-volume
           configMap:
             name: {{ template "presto.coordinator" . }}
+        - name: connectors-config-volume
+          configMap:
+            name: {{ template "presto.connectors" . }}
       containers:
         - name: {{ .Chart.Name }}-coordinator
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -37,24 +40,26 @@ spec:
           volumeMounts:
             - mountPath: {{ .Values.presto.coordinator.config.path }}
               name: config-volume
+            - mountPath: {{ .Values.presto.coordinator.config.path }}/catalog
+              name: connectors-config-volume
           ports:
             - name: http-coord
               containerPort: {{ .Values.presto.coordinator.config.server.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /v1/cluster
+              path: /ui/login.html
               port: http-coord
           readinessProbe:
             httpGet:
-              path: /v1/cluster
+              path: /ui/login.html
               port: http-coord
           resources:
       {{ toYaml .Values.presto.coordinator.resources | indent 12 }}
       {{- with .Values.presto.coordinator.nodeSelector }}
       nodeSelector:
-      {{ toYaml . | indent 8 }}
-      {{- end }}
+        {{ toYaml . | indent 8 }}
+        {{- end }}
       {{- with .Values.presto.coordinator.affinity }}
       affinity:
       {{ toYaml . | indent 8 }}

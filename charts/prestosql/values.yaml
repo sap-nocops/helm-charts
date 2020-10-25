@@ -1,6 +1,6 @@
 image:
   repository: prestosql/presto
-  tag: 329
+  tag: 345
   pullPolicy: IfNotPresent
   securityContext:
     runAsUser: 1000
@@ -41,6 +41,9 @@ presto:
     replicas: 2
     config:
       path: /usr/lib/presto/etc
+      gracefulShutdown:
+        enabled: true
+        gracePeriodSeconds: 300
       server:
         port: 8080
         loglevel: "INFO"
@@ -62,29 +65,14 @@ presto:
     tolerations: [ ]
 
     affinity: { }
-#server:
-#  workers: 2
-#  node:
-#    environment: production
-#    dataDir: /data/presto
-#    pluginDir: /usr/lib/presto/plugin
-#  log:
-#    presto:
-#      level: INFO
-#  config:
-#    path: /usr/lib/presto/etc
-#    http:
-#      port: 8080
-#    query:
-#      maxMemory: "4GB"
-#      maxMemoryPerNode: "1GB"
-#  jvm:
-#    maxHeapSize: "8G"
-#    gcMethod:
-#      type: "UseG1GC"
-#      g1:
-#        heapRegionSize: "32M"
-#
-#
+
+  connectors:
+    memory.properties: |-
+      connector.name=memory
+
+    tpcds.properties: |-
+      connector.name=tpcds
+      tpcds.splits-per-node=4
+
 service:
   type: ClusterIP

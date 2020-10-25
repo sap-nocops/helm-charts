@@ -8,5 +8,5 @@ icon: https://prestosql.io/docs/current/_static/presto.png
 sources:
   - https://github.com/prestosql/presto
 maintainers:
-  - name: bivas
-    email: eliran.bivas@gmail.com
+  - name: Tommaso Garuglieri
+    email: tommaso.garuglieri@datappeal.io
