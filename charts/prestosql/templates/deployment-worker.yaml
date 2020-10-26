@@ -40,21 +40,21 @@ spec:
               name: config-volume
             - mountPath: {{ .Values.presto.worker.config.path }}/catalog
               name: connectors-config-volume
-          # TODO recent presto version breaks the health check :(
-          #   livenessProbe:
-          #     exec:
-          #       command:
-          #         - /bin/bash
-          #         - {{ .Values.presto.worker.config.path }}/health_check.sh
-          #     initialDelaySeconds: 10
-          #     periodSeconds: 25
-          #   readinessProbe:
-          #     exec:
-          #       command:
-          #         - /bin/bash
-          #         - {{ .Values.presto.worker.config.path }}/health_check.sh
-          #     initialDelaySeconds: 5
-          #     periodSeconds: 10
+          ports:
+            - name: http-worker
+              containerPort: {{ .Values.presto.worker.config.server.port }}
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /v1/info/state
+              port: http-worker
+          livenessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - {{ .Values.presto.worker.config.path }}/health_check.sh
+            initialDelaySeconds: 5
+            periodSeconds: 10
 
           {{ if .Values.presto.worker.config.gracefulShutdown.enabled }}
           lifecycle:

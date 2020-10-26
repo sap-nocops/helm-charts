@@ -43,7 +43,7 @@ presto:
       path: /usr/lib/presto/etc
       gracefulShutdown:
         enabled: true
-        gracePeriodSeconds: 300
+        gracePeriodSeconds: 10
       server:
         port: 8080
         loglevel: "INFO"
