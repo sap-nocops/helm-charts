@@ -24,13 +24,19 @@ data:
     -XX:+HeapDumpOnOutOfMemoryError
     -XX:+ExitOnOutOfMemoryError
     -Djdk.attach.allowAttachSelf=true
+    {{ range $value := .Values.presto.worker.config.jvm.additional_params }}
+    {{ $value }}
+    {{end}}
 
   config.properties: |
     coordinator=false
     http-server.http.port={{ .Values.presto.worker.config.server.port }}
-    query.max-memory={{ .Values.presto.query.maxMemory }}
-    query.max-memory-per-node={{ .Values.presto.query.maxMemoryPerNode }}
+    query.max-memory={{ .Values.presto.config.query.maxMemory }}
+    query.max-memory-per-node={{ .Values.presto.config.query.maxMemoryPerNode }}
     discovery.uri=http://{{ template "presto.fullname" . }}:{{ .Values.presto.coordinator.config.server.port }}
+    {{ range $key,$value := .Values.presto.config.additional_params }}
+    {{ $key }}={{ $value }}
+    {{end}}
 
   log.properties: |
     io.prestosql={{ .Values.presto.coordinator.config.server.loglevel }}

@@ -8,9 +8,13 @@ image:
 
 
 presto:
-  query:
-    maxMemory: "4GB"
-    maxMemoryPerNode: "1GB"
+  config:
+    query:
+      maxMemory: "4GB"
+      maxMemoryPerNode: "1GB"
+    additional_params:
+      http-server.log.max-history: 5
+      log.max-history: 5
 
   coordinator:
     config:
@@ -24,6 +28,8 @@ presto:
           type: "UseG1GC"
           g1:
             heapRegionSize: "32M"
+        additional_params: []
+
       node:
         environment: production
         dataDir: /data/presto
@@ -53,6 +59,7 @@ presto:
           type: "UseG1GC"
           g1:
             heapRegionSize: "32M"
+        additional_params: []
       node:
         environment: production
         dataDir: /data/presto
@@ -76,3 +83,4 @@ presto:
 
 service:
   type: ClusterIP
+
