@@ -9,12 +9,16 @@ spec:
     - name: {{ .Release.Name }}-query-execution-name
       image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
       imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
-      {{- with .Values.image.securityContext }}
+      {{with .Values.image.securityContext}}
       securityContext:
         runAsUser: {{ .runAsUser }}
         runAsGroup: {{ .runAsGroup }}
-      {{- end }}
-      command:
-        - /bin/bash
-        - "presto --execute \"SELECT 1\" --server \"http://{{ template "presto.fullname" . }}:{{ .Values.presto.coordinator.config.server.port }}\""
+      {{end}}
+      command: [
+          "presto",
+          "--execute",
+          "SELECT 1",
+          "--server",
+          "http://{{ template "presto.fullname" . }}:{{ .Values.presto.coordinator.config.server.port }}"
+      ]
   restartPolicy: Never
