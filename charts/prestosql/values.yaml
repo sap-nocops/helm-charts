@@ -23,7 +23,8 @@ presto:
         port: 8080
         loglevel: "INFO"
       jvm:
-        maxHeapSize: "8G"
+        maxMemoryPercentage: "90"
+        minMemoryPercentage: "80"
         gcMethod:
           type: "UseG1GC"
           g1:
@@ -54,7 +55,8 @@ presto:
         port: 8080
         loglevel: "INFO"
       jvm:
-        maxHeapSize: "8G"
+        maxMemoryPercentage: "90"
+        minMemoryPercentage: "80"
         gcMethod:
           type: "UseG1GC"
           g1:

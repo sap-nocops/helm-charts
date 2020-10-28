@@ -16,7 +16,8 @@ data:
 
   jvm.config: |
     -server
-    -Xmx{{ .Values.presto.worker.config.jvm.maxHeapSize }}
+    -XX:MaxRAMPercentage={{ .Values.presto.worker.config.jvm.maxMemoryPercentage }}
+    -XX:MinRAMPercentage={{ .Values.presto.worker.config.jvm.minMemoryPercentage }}
     -XX:+{{ .Values.presto.worker.config.jvm.gcMethod.type }}
     -XX:G1HeapRegionSize={{ .Values.presto.worker.config.jvm.gcMethod.g1.heapRegionSize }}
     -XX:+UseGCOverheadLimit
