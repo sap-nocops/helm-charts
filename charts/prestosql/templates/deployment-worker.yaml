@@ -66,16 +66,16 @@ spec:
                 ]
           {{end }}
           resources:
-      {{ toYaml .Values.presto.worker.resources | indent 12 }}
+           {{- toYaml .Values.presto.worker.resources | nindent 12 }}
       {{- with .Values.presto.worker.nodeSelector }}
       nodeSelector:
-      {{ toYaml . | indent 8 }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.presto.worker.affinity }}
       affinity:
-      {{ toYaml . | indent 8 }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.presto.worker.tolerations }}
       tolerations:
-  {{ toYaml . | indent 8 }}
+    {{- toYaml . | nindent 8 }}
   {{- end }}
