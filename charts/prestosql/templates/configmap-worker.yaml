@@ -42,7 +42,6 @@ data:
   log.properties: |
     io.prestosql={{ .Values.presto.coordinator.config.server.loglevel }}
 
-
   health_check.sh: |
     STATE_OUT=$(curl -q http://localhost:{{ .Values.presto.worker.config.server.port }}/v1/info/state)
     EXPECTED="\"ACTIVE\""
