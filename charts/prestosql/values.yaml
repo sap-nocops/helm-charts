@@ -6,7 +6,6 @@ image:
     runAsUser: 1000
     runAsGroup: 1000
 
-
 presto:
   config:
     query:
@@ -84,5 +83,6 @@ presto:
       tpcds.splits-per-node=4
 
 service:
+  labels: {}
   type: ClusterIP
 
