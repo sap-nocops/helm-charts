@@ -11,7 +11,7 @@ spec:
       - {{ .Release.Namespace }}
   selector:
     matchLabels:
-    {{- include "presto-exporter.labels" . | nindent 4 }}
+    {{- include "presto-exporter.labels" . | nindent 8 }}
   endpoints:
     - port: http
       path: /metrics
