@@ -32,7 +32,7 @@ spec:
               "--aws-autodiscovery=true",
             {{ end }}
 
-            {{ if .Values.discovery.aws }}
+            {{ if .Values.discovery.k8s }}
               "--k8s-autodiscovery=true",
             {{ end }}
           ]
