@@ -1,0 +1,22 @@
+{{ if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "presto-exporter.fullname" . }}
+  labels:
+  {{- include "presto-exporter.labels" . | nindent 4 }}
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+    {{- include "presto-exporter.labels" . | nindent 4 }}
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 5s
+
+{{ end }}
+
+---

@@ -52,6 +52,11 @@ tolerations: [ ]
 
 affinity: { }
 
+
+serviceMonitor:
+  enabled: true
+
+
 discovery:
   aws: false
   k8s: false
