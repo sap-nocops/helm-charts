@@ -97,6 +97,17 @@ entries:
     urls:
     - https://github.com/The-Data-Appeal-Company/helm-charts/releases/download/presto-0.2.1/presto-0.2.1.tgz
     version: 0.2.1
+  presto-exporter:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2020-11-05T14:01:38.837431381Z"
+    description: Presto exporter helm chart
+    digest: 2b7f6ee535a7153de6ba6a1b7883c3ee7623860e5548decb1c8d0dbac0d68248
+    name: presto-exporter
+    type: application
+    urls:
+    - https://github.com/The-Data-Appeal-Company/helm-charts/releases/download/presto-exporter-0.0.2/presto-exporter-0.0.2.tgz
+    version: 0.0.2
   presto-loadbalancer:
   - apiVersion: v2
     appVersion: 0.1.5
