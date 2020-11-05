@@ -99,6 +99,16 @@ entries:
     version: 0.2.1
   presto-exporter:
   - apiVersion: v2
+    appVersion: 0.0.2
+    created: "2020-11-05T14:43:48.687017374Z"
+    description: Presto exporter helm chart
+    digest: 7b667070ef759393d41dfd587aa0fd861aeb11981946a200e749da94233f3c80
+    name: presto-exporter
+    type: application
+    urls:
+    - https://github.com/The-Data-Appeal-Company/helm-charts/releases/download/presto-exporter-0.0.4/presto-exporter-0.0.4.tgz
+    version: 0.0.4
+  - apiVersion: v2
     appVersion: 0.0.1
     created: "2020-11-05T14:01:38.837431381Z"
     description: Presto exporter helm chart
