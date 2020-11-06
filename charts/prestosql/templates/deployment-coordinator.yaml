@@ -46,6 +46,11 @@ spec:
             - name: http-coord
               containerPort: {{ .Values.presto.coordinator.config.server.port }}
               protocol: TCP
+            {{ if .Values.presto.config.jmx.enabled }}
+            - name: jmx
+              containerPort: {{ .Values.presto.config.jmx.registryPort }}
+              protocol: TCP
+            {{ end }}
           livenessProbe:
             initialDelaySeconds: 30
             periodSeconds: 5

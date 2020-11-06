@@ -31,7 +31,6 @@ spec:
             name: {{ template "presto.connectors" . }}
       terminationGracePeriodSeconds: 60
       containers:
-
         - name: {{ .Chart.Name }}-worker
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -44,6 +43,11 @@ spec:
             - name: http-worker
               containerPort: {{ .Values.presto.worker.config.server.port }}
               protocol: TCP
+            {{ if .Values.presto.config.jmx.enabled }}
+            - name: jmx
+              containerPort: {{ .Values.presto.config.jmx.registryPort }}
+              protocol: TCP
+          {{ end }}
           readinessProbe:
             httpGet:
               path: /v1/info/state

@@ -8,6 +8,10 @@ image:
 
 presto:
   config:
+    jmx:
+      enabled: false
+      registryPort: 9080
+      serverPort: 9081
     query:
       maxMemory: "4GB"
       maxMemoryPerNode: "1GB"
@@ -28,7 +32,7 @@ presto:
           type: "UseG1GC"
           g1:
             heapRegionSize: "32M"
-        additional_params: []
+        additional_params: [ ]
 
       node:
         environment: production
@@ -60,7 +64,7 @@ presto:
           type: "UseG1GC"
           g1:
             heapRegionSize: "32M"
-        additional_params: []
+        additional_params: [ ]
       node:
         environment: production
         dataDir: /data/presto
@@ -83,6 +87,6 @@ presto:
       tpcds.splits-per-node=4
 
 service:
-  labels: {}
+  labels: { }
   type: ClusterIP
 

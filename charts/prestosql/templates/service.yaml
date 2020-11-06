@@ -21,3 +21,29 @@ spec:
     app: {{ template "presto.name" . }}
     release: {{ .Release.Name }}
     component: coordinator
+---
+{{ if .Values.presto.config.jmx.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "presto.fullname" . }}-jmx
+  labels:
+    app: {{ template "presto.name" . }}
+    chart: {{ template "presto.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    {{- if .Values.service.labels }}
+  {{- toYaml .Values.service.labels | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.presto.config.jmx.registryPort }}
+      targetPort: jmx
+      protocol: TCP
+      name: jmx
+  selector:
+    app: {{ template "presto.name" . }}
+    release: {{ .Release.Name }}
+{{end}}
+---
