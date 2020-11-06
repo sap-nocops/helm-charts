@@ -8,6 +8,9 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     component: worker
+    {{ if .Values.presto.config.jmx.enabled}}
+    monitoring.jmx: enabled
+    {{ end }}
 spec:
   replicas: {{ .Values.presto.worker.replicas }}
   selector:

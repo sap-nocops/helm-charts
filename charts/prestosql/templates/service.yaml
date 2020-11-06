@@ -45,5 +45,6 @@ spec:
   selector:
     app: {{ template "presto.name" . }}
     release: {{ .Release.Name }}
+    monitoring.jmx: enabled
 {{end}}
 ---
