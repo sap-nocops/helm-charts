@@ -11,7 +11,7 @@ metadata:
     component: exporter
 data:
   {{- with .Values.exporters.jmx.config }}
-  config.yml:
+  config.yml: |-
   {{- toYaml . | nindent 4 }}
   {{end}}
 {{end}}
