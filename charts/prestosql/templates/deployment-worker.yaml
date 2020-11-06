@@ -78,7 +78,7 @@ spec:
           image: "{{ .Values.exporters.jmx.image.repository }}:{{ .Values.exporters.jmx.image.tag }}"
           imagePullPolicy: {{ .Values.exporters.jmx.image.pullPolicy }}
           ports:
-            - containerPort: 9080
+            - containerPort: {{ .Values.exporters.jmx.port }}
               protocol: TCP
               name: exporter
           livenessProbe:
