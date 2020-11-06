@@ -1,0 +1,22 @@
+{{ if .Values.exporters.jmx.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "presto.fullname" . }}
+  labels:
+  {{- include "presto.labels" . | nindent 4 }}
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      {{- include "presto.labels" . | nindent 6 }}
+      monitoring.service: jmx
+  endpoints:
+    - port: exporter
+      path: /metrics
+      interval: 10s
+
+{{ end }}
+---

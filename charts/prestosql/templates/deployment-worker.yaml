@@ -29,10 +29,11 @@ spec:
         - name: connectors-config-volume
           configMap:
             name: {{ template "presto.connectors" . }}
+        {{ if .Values.exporters.jmx.enabled }}
         - name: config-jmx-exporter
           configMap:
             name: {{ template "presto.jmx-exporter" . }}
-
+        {{ end }}
       terminationGracePeriodSeconds: 60
       containers:
         - name: {{ .Chart.Name }}-worker
