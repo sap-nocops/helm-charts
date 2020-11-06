@@ -8,9 +8,6 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     component: worker
-    {{ if .Values.presto.config.jmx.enabled }}
-    monitoring.jmx: enabled
-    {{ end }}
 spec:
   replicas: {{ .Values.presto.worker.replicas }}
   selector:
@@ -32,6 +29,10 @@ spec:
         - name: connectors-config-volume
           configMap:
             name: {{ template "presto.connectors" . }}
+        - name: config-jmx-exporter
+          configMap:
+            name: {{ template "presto.jmx-exporter" . }}
+
       terminationGracePeriodSeconds: 60
       containers:
         - name: {{ .Chart.Name }}-worker
@@ -46,11 +47,7 @@ spec:
             - name: http-worker
               containerPort: {{ .Values.presto.worker.config.server.port }}
               protocol: TCP
-            {{ if .Values.presto.config.jmx.enabled }}
-            - name: jmx
-              containerPort: {{ .Values.presto.config.jmx.registryPort }}
-              protocol: TCP
-          {{ end }}
+
           readinessProbe:
             httpGet:
               path: /v1/info/state
@@ -73,7 +70,52 @@ spec:
                 ]
           {{end }}
           resources:
-           {{- toYaml .Values.presto.worker.resources | nindent 12 }}
+        {{- toYaml .Values.presto.worker.resources | nindent 12 }}
+
+
+        {{ if .Values.exporters.jmx.enabled }}
+        - name: jmx-exporter
+          image: "{{ .Values.exporters.jmx.image.repository }}:{{ .Values.exporters.jmx.image.tag }}"
+          imagePullPolicy: {{ .Values.exporters.jmx.image.pullPolicy }}
+          ports:
+            - containerPort: 9080
+              protocol: TCP
+
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: exporter
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 60
+            failureThreshold: 8
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: exporter
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 60
+            failureThreshold: 8
+            successThreshold: 1
+          env:
+            - name: SERVICE_PORT
+              value: {{ .Values.presto.config.jmx.registryPort | quote }}
+            {{- with .Values.exporters.jmx.env }}
+            {{- range $key, $value := . }}
+            - name: {{ $key | upper | replace "." "_" }}
+              value: {{ $value | quote }}
+          {{- end }}
+          {{- end }}
+          resources:
+          {{ toYaml .Values.exporters.jmx.resources | indent 12 }}
+          volumeMounts:
+            - name: config-jmx-exporter
+              mountPath: /opt/jmx_exporter/config.yml
+              subPath: config.yml
+      {{- end }}
+
       {{- with .Values.presto.worker.nodeSelector }}
       nodeSelector:
       {{- toYaml . | nindent 8 }}
@@ -84,5 +126,5 @@ spec:
       {{- end }}
       {{- with .Values.presto.worker.tolerations }}
       tolerations:
-    {{- toYaml . | nindent 8 }}
+  {{- toYaml . | nindent 8 }}
   {{- end }}

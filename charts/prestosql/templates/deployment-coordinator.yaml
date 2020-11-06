@@ -8,7 +8,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     component: coordinator
-    {{ if .Values.presto.config.jmx.enabled }}
+    {{ if .Values.exporters.jmx.enabled }}
     monitoring.jmx: enabled
     {{ end }}
 spec:
@@ -49,7 +49,7 @@ spec:
             - name: http-coord
               containerPort: {{ .Values.presto.coordinator.config.server.port }}
               protocol: TCP
-            {{ if .Values.presto.config.jmx.enabled }}
+            {{ if .Values.exporters.jmx.enabled }}
             - name: jmx
               containerPort: {{ .Values.presto.config.jmx.registryPort }}
               protocol: TCP

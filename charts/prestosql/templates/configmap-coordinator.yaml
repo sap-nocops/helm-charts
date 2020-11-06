@@ -25,7 +25,7 @@ data:
     -XX:+HeapDumpOnOutOfMemoryError
     -XX:+ExitOnOutOfMemoryError
     -Djdk.attach.allowAttachSelf=true
-    {{ if .Values.presto.config.jmx.enabled }}
+    {{ if .Values.exporters.jmx.enabled }}
     -Dcom.sun.management.jmxremote
     -Dcom.sun.management.jmxremote.local.only=false
     -Dcom.sun.management.jmxremote.authenticate=false
@@ -45,7 +45,7 @@ data:
     query.max-memory-per-node={{ .Values.presto.config.query.maxMemoryPerNode }}
     discovery-server.enabled=true
     discovery.uri=http://localhost:{{ .Values.presto.coordinator.config.server.port }}
-    {{ if .Values.presto.config.jmx.enabled }}
+    {{ if .Values.exporters.jmx.enabled }}
     jmx.rmiregistry.port={{ .Values.presto.config.jmx.registryPort }}
     jmx.rmiserver.port={{ .Values.presto.config.jmx.serverPort }}
     {{ end }}
