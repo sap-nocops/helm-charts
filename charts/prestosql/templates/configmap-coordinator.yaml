@@ -26,8 +26,8 @@ data:
     -XX:+ExitOnOutOfMemoryError
     -Djdk.attach.allowAttachSelf=true
     {{ if .Values.presto.config.jmx.enabled }}
-    -Dcom.sun.management.jmxremote.port={{ .Values.presto.config.jmx.serverPort }}
-    -Dcom.sun.management.jmxremote.rmi.port={{ .Values.presto.config.jmx.registryPort }}
+    -Dcom.sun.management.jmxremote.port={{ .Values.presto.config.jmx.registryPort }}
+    -Dcom.sun.management.jmxremote.rmi.port={{ .Values.presto.config.jmx.serverPort }}
     -Dcom.sun.management.jmxremote.authenticate=false
     {{ end }}
     {{ range $value := .Values.presto.coordinator.config.jvm.additional_params }}
