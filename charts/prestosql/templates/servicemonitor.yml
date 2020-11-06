@@ -11,12 +11,13 @@ spec:
       - {{ .Release.Namespace }}
   selector:
     matchLabels:
-      {{- include "presto.labels" . | nindent 6 }}
+      app: {{ template "presto.name" . }}
       monitoring.service: jmx
+      release: {{ .Release.Name }}
+      chart: {{ template "presto.chart" . }}
   endpoints:
     - port: exporter
       path: /metrics
       interval: 10s
-
 {{ end }}
 ---

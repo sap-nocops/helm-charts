@@ -26,10 +26,10 @@ metadata:
   name: {{ template "presto.fullname" . }}-jmx
   labels:
     app: {{ template "presto.name" . }}
-    chart: {{ template "presto.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
     monitoring.service: jmx
+    release: {{ .Release.Name }}
+    chart: {{ template "presto.chart" . }}
+    heritage: {{ .Release.Service }}
     {{- if .Values.service.labels }}
   {{- toYaml .Values.service.labels | nindent 4 }}
   {{- end }}
