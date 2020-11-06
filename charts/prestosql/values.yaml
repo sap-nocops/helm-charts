@@ -97,26 +97,81 @@ exporters:
       repository: sscaling/jmx-prometheus-exporter
       tag: 0.3.0
       pullPolicy: IfNotPresent
+
+    port: 9999
     config:
-      lowercaseOutputName: false
-      ## ref: https://github.com/prometheus/jmx_exporter/blob/master/example_configs/zookeeper.yaml
+      lowercaseOutputName: true
+      lowercaseOutputLabelNames: true
+      attrNameSnakeCase: false
       rules:
-        - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+)><>(\\w+)"
-          name: "zookeeper_$2"
-        - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+), name1=replica.(\\d+)><>(\\w+)"
-          name: "zookeeper_$3"
+        # capture percentile and set quantile label
+        - pattern: 'presto.plugin.hive<type=(.+), name=hive><>(.+AllTime).P(\d+): (.*)'
+          name: 'presto_hive_$1_$2_seconds'
+          type: GAUGE
+          valueFactor: 0.001
           labels:
-            replicaId: "$2"
-        - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+), name1=replica.(\\d+), name2=(\\w+)><>(\\w+)"
-          name: "zookeeper_$4"
+            quantile: '0.$3'
+        # match non-percentiles
+        - pattern: 'presto.plugin.hive<type=(.+), name=hive><>(.+AllTime.+): (.*)'
+          name: 'presto_hive_$1_$2_seconds'
+          type: GAUGE
+          valueFactor: 0.001
+          # counts
+        - pattern: 'presto.plugin.hive<type=(.+), name=hive><>(.+TotalCount.*): (.*)'
+          name: 'presto_hive_$1_$2_total'
+          type: COUNTER
+        # capture percentile and set quantile label
+        - pattern: 'presto.plugin.hive.s3<type=(.+), name=hive><>(.+AllTime).P(\d+): (.*)'
+          name: 'presto_hive_s3_$1_$2_seconds'
+          type: GAUGE
+          valueFactor: 0.001
           labels:
-            replicaId: "$2"
-            memberType: "$3"
-        - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+), name1=replica.(\\d+), name2=(\\w+), name3=(\\w+)><>(\\w+)"
-          name: "zookeeper_$4_$5"
+            quantile: '0.$3'
+        # match non-percentiles
+        - pattern: 'presto.plugin.hive.s3<type=(.+), name=hive><>(.+AllTime.+): (.*)'
+          name: 'presto_hive_s3_$1_$2_seconds'
+          type: GAUGE
+          valueFactor: 0.001
+          # counts
+        - pattern: 'presto.plugin.hive.s3<type=(.+), name=hive><>(.+TotalCount.*): (.*)'
+          name: 'presto_hive_s3_$1_$2_total'
+          type: COUNTER
+        # capture percentile and set quantile label
+        - pattern: 'presto.plugin.hive.metastore.thrift<type=(.+), name=hive><>(.+AllTime).P(\d+): (.*)'
+          name: 'presto_hive_metastore_thrift_$1_$2_seconds'
+          type: GAUGE
+          valueFactor: 0.001
           labels:
-            replicaId: "$2"
-            memberType: "$3"
+            quantile: '0.$3'
+        # match non-percentiles
+        - pattern: 'presto.plugin.hive.metastore.thrift<type=(.+), name=hive><>(.+AllTime.+): (.*)'
+          name: 'presto_hive_metastore_thrift_$1_$2_count_seconds'
+          type: GAUGE
+          valueFactor: 0.001
+        # counts
+        - pattern: 'presto.plugin.hive.metastore.thrift<type=(.+), name=hive><>(.+TotalCount.*): (.*)'
+          name: 'presto_hive_metastore_thrift_$1_$2_total'
+          type: COUNTER
+        - pattern: 'presto.execution<name=(.+)><>(.+AllTime).P(\d+): (.*)'
+          name: 'presto_execution_$1_$2_seconds'
+          type: GAUGE
+          valueFactor: 0.001
+          labels:
+            quantile: '0.$3'
+        - pattern: 'presto.execution<name=(.+)><>(.+AllTime.+): (.*)'
+          name: 'presto_execution_$1_$2_seconds'
+          type: GAUGE
+          valueFactor: 0.001
+        # counts
+        - pattern: 'presto.execution<name=(.+)><>(.+TotalCount.*): (.*)'
+          name: 'presto_execution_$1_$2_total'
+          type: COUNTER
+        - pattern: 'presto.memory<type=(.*), name=(.*)><>(.+): (.*)'
+          name: 'presto_memory_$1_$2_$3'
+          type: GAUGE
+        - pattern: 'presto.failuredetector<name=HeartbeatFailureDetector><>ActiveCount: (.*)'
+          name: 'presto_heartbeatdetector_activecount'
+          type: GAUGE
       startDelaySeconds: 30
     env: {}
     resources: {}

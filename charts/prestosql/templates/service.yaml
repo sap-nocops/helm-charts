@@ -22,7 +22,7 @@ spec:
     release: {{ .Release.Name }}
     component: coordinator
 ---
-{{ if .Values.presto.config.jmx.enabled }}
+{{ if .Values.exporters.jmx.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -38,13 +38,12 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.presto.config.jmx.registryPort }}
-      targetPort: jmx
+    - port: {{ .Values.exporters.jmx.port }}
+      targetPort: exporter
       protocol: TCP
-      name: jmx
+      name: exporter
   selector:
     app: {{ template "presto.name" . }}
     release: {{ .Release.Name }}
-    monitoring.jmx: enabled
 {{end}}
 ---

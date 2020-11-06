@@ -80,7 +80,7 @@ spec:
           ports:
             - containerPort: 9080
               protocol: TCP
-
+              name: exporter
           livenessProbe:
             httpGet:
               path: /metrics
@@ -101,7 +101,7 @@ spec:
             successThreshold: 1
           env:
             - name: SERVICE_PORT
-              value: {{ .Values.presto.config.jmx.registryPort | quote }}
+              value: {{ .Values.exporters.jmx.port | quote }}
             {{- with .Values.exporters.jmx.env }}
             {{- range $key, $value := . }}
             - name: {{ $key | upper | replace "." "_" }}
