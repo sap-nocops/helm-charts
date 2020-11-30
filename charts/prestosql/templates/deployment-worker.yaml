@@ -35,6 +35,10 @@ spec:
             name: {{ template "presto.jmx-exporter" . }}
         {{ end }}
       terminationGracePeriodSeconds: 60
+      {{- with .Values.image.pullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}-worker
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

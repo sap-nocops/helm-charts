@@ -41,6 +41,10 @@ spec:
           configMap:
             name: {{ template "presto.jmx-exporter" . }}
       {{ end }}
+      {{- with .Values.image.pullSecrets }}
+      imagePullSecrets:
+          {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}-coordinator
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

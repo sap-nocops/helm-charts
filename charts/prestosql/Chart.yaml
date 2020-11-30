@@ -2,7 +2,7 @@ apiVersion: v1
 appVersion: '346'
 description: Distributed SQL query engine for running interactive analytic queries
 name: presto
-version: 0.2.27
+version: 0.2.28
 home: https://prestosql.io
 icon: https://prestosql.io/assets/presto.png
 sources:

@@ -2,6 +2,7 @@ image:
   repository: prestosql/presto
   tag: 346
   pullPolicy: IfNotPresent
+  pullSecrets: []
   securityContext:
     runAsUser: 1000
     runAsGroup: 1000
