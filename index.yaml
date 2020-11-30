@@ -3,6 +3,22 @@ entries:
   presto:
   - apiVersion: v1
     appVersion: "346"
+    created: "2020-11-30T08:54:56.818355717Z"
+    description: Distributed SQL query engine for running interactive analytic queries
+    digest: e676b780eee7b737294f93de4abc74d87ec1175c50a821ebad73bf6c8af25b0e
+    home: https://prestosql.io
+    icon: https://prestosql.io/assets/presto.png
+    maintainers:
+    - email: tommaso.garuglieri@datappeal.io
+      name: Tommaso Garuglieri
+    name: presto
+    sources:
+    - https://github.com/prestosql/presto
+    urls:
+    - https://github.com/The-Data-Appeal-Company/helm-charts/releases/download/presto-0.2.28/presto-0.2.28.tgz
+    version: 0.2.28
+  - apiVersion: v1
+    appVersion: "346"
     created: "2020-11-25T09:44:22.999181077Z"
     description: Distributed SQL query engine for running interactive analytic queries
     digest: 5dc6d421584e1696ae866a43fab930b566b56d1ac538a0990beccf386b7264c5
