@@ -1,6 +1,6 @@
 image:
   repository: prestosql/presto
-  tag: 346
+  tag: 347
   pullPolicy: IfNotPresent
   pullSecrets: []
   securityContext:
