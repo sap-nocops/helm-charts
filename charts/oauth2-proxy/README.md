@@ -6,7 +6,6 @@
 
 https://www.callumpember.com/Kubernetes-A-Single-OAuth2-Proxy-For-Multiple-Ingresses/
 
-
 [oauth2-proxy](https://github.com/pusher/oauth2_proxy) is a reverse proxy and static file server that provides authentication using Providers (Google, GitHub, and others) to validate accounts by email, domain or group.
 
 ## TL;DR;
