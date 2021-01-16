@@ -47,10 +47,10 @@ spec:
 {{ toYaml .Values.initContainers | indent 6 }}
 {{- end }}
       containers:
-      - name: nginx
+      - name: {{ .Chart.Name }}-nginx
         image: nginx:1.15.9-alpine
         resources:
-        {{ toYaml .Values.resources | indent 10 }}
+{{ toYaml .Values.resources | indent 10 }}
         ports:
           - name: nginx
             containerPort: 80
