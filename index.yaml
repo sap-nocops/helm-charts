@@ -3,9 +3,33 @@ entries:
   oauth2-proxy:
   - apiVersion: v1
     appVersion: 5.1.0
+    created: "2021-01-16T23:00:34.908220297Z"
+    description: A reverse proxy that provides authentication with Google, Github or other providers
+    digest: 0c7fde3887fc72ffd3bb475f0ce7455aa01239c784d985db5bae680d270173b2
+    home: https://oauth2-proxy.github.io/oauth2-proxy/
+    keywords:
+    - kubernetes
+    - oauth
+    - oauth2
+    - authentication
+    - google
+    - github
+    kubeVersion: '>=1.9.0-0'
+    maintainers:
+    - email: ryan@ryanholt.net
+      name: carpenike
+    - email: tommaso.garuglieri@datappeal.io
+      name: tommaso garuglieri
+    name: oauth2-proxy
+    sources:
+    - https://github.com/oauth2-proxy/oauth2-proxy
+    urls:
+    - https://github.com/The-Data-Appeal-Company/helm-charts/releases/download/oauth2-proxy-4.3.10/oauth2-proxy-4.3.10.tgz
+    version: 4.3.10
+  - apiVersion: v1
+    appVersion: 5.1.0
     created: "2021-01-16T22:11:21.253896998Z"
-    description: A reverse proxy that provides authentication with Google, Github
-      or other providers
+    description: A reverse proxy that provides authentication with Google, Github or other providers
     digest: 4da408f48d93d517338676cba1bc4508be27398846f2b1270733701299ccd9c3
     home: https://oauth2-proxy.github.io/oauth2-proxy/
     keywords:
@@ -28,8 +52,7 @@ entries:
   - apiVersion: v1
     appVersion: 5.1.0
     created: "2021-01-16T21:28:43.996784Z"
-    description: A reverse proxy that provides authentication with Google, Github
-      or other providers
+    description: A reverse proxy that provides authentication with Google, Github or other providers
     digest: c56d4df42b7b9b325866c53f62a852e9738bb8e78e5eec2c32b59a339e07ae9f
     home: https://oauth2-proxy.github.io/oauth2-proxy/
     keywords:
