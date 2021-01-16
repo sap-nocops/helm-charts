@@ -47,24 +47,24 @@ spec:
 {{ toYaml .Values.initContainers | indent 6 }}
 {{- end }}
       containers:
-        - name: nginx
-          image: nginx:1.15.9-alpine
-          resources:
-          {{ toYaml .Values.resources | indent 10 }}
-          ports:
-            - name: nginx
-              containerPort: 80
-          volumeMounts:
-            - name: nginx
-              mountPath: /etc/nginx/
-              readOnly: true
-          livenessProbe:
-            httpGet:
-              path: /healthcheck
-              port: 80
-            initialDelaySeconds: 3
-            timeoutSeconds: 2
-            failureThreshold: 2
+      - name: nginx
+        image: nginx:1.15.9-alpine
+        resources:
+        {{ toYaml .Values.resources | indent 10 }}
+        ports:
+          - name: nginx
+            containerPort: 80
+        volumeMounts:
+          - name: nginx
+            mountPath: /etc/nginx/
+            readOnly: true
+        livenessProbe:
+          httpGet:
+            path: /healthcheck
+            port: 80
+          initialDelaySeconds: 3
+          timeoutSeconds: 2
+          failureThreshold: 2
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
