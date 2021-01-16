@@ -125,7 +125,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /ping
-            port: {{ .Values.httpScheme }}
+            port: 4180
             scheme: {{ .Values.httpScheme | upper }}
           initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
           timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
@@ -134,7 +134,7 @@ spec:
         readinessProbe:
           httpGet:
             path: /ping
-            port: {{ .Values.httpScheme }}
+            port: 4180
             scheme: {{ .Values.httpScheme | upper }}
           initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
           timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
