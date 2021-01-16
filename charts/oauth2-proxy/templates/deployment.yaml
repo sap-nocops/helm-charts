@@ -52,7 +52,7 @@ spec:
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         ports:
-          - name: {{ .Values.httpScheme }}
+          - name: nginx
             containerPort: 80
         volumeMounts:
           - name: nginx
@@ -118,14 +118,14 @@ spec:
 {{ toYaml .Values.extraEnv | indent 8 }}
         {{- end }}
         ports:
-          - name: direct-http
+          - name: {{ .Values.httpScheme }}
             containerPort: 4180
             protocol: TCP
 {{- if .Values.livenessProbe.enabled }}
         livenessProbe:
           httpGet:
             path: /ping
-            port: 4180
+            port: {{ .Values.httpScheme }}
             scheme: {{ .Values.httpScheme | upper }}
           initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
           timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
@@ -134,7 +134,7 @@ spec:
         readinessProbe:
           httpGet:
             path: /ping
-            port: 4180
+            port: {{ .Values.httpScheme }}
             scheme: {{ .Values.httpScheme | upper }}
           initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
           timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
