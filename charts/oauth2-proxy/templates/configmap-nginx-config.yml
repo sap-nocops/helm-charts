@@ -11,6 +11,7 @@ metadata:
 data:
   nginx.conf: |
     worker_processes 5;
+
     events {
     }
 
