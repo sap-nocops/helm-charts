@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: garugaru/presto-exporter
-  tag: latest
+  tag: cb666560e9e82d5ae36aef1e663c3d7f51cca9fc
   pullPolicy: Always
 
 imagePullSecrets: [ ]
