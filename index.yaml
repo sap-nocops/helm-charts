@@ -666,4 +666,15 @@ entries:
     urls:
     - https://github.com/The-Data-Appeal-Company/helm-charts/releases/download/presto-loadbalancer-0.1.0/presto-loadbalancer-0.1.0.tgz
     version: 0.1.0
+  trino:
+  - apiVersion: v2
+    appVersion: "353"
+    created: "2021-03-10T09:58:02.645064493Z"
+    description: Fast distributed SQL query engine for big data analytics
+    digest: 88aae2d9ce8ad25522c4b8f5124411be9dab67a966f5fb9621e5e1c0112260ec
+    name: trino
+    type: application
+    urls:
+    - https://github.com/The-Data-Appeal-Company/helm-charts/releases/download/trino-0.1.2/trino-0.1.2.tgz
+    version: 0.1.2
 generated: "2020-09-28T13:39:12.541422748Z"
