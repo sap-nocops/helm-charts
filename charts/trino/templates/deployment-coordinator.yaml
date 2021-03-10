@@ -1,0 +1,121 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "trino.coordinator" . }}
+  labels:
+    app: {{ template "trino.name" . }}
+    chart: {{ template "trino.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: coordinator
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "trino.name" . }}
+      release: {{ .Release.Name }}
+      component: coordinator
+  template:
+    metadata:
+      labels:
+        app: {{ template "trino.name" . }}
+        release: {{ .Release.Name }}
+        component: coordinator
+    spec:
+      {{- with .Values.securityContext }}
+      securityContext:
+        runAsUser: {{ .runAsUser }}
+        runAsGroup: {{ .runAsGroup }}
+      {{- end }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ template "trino.coordinator" . }}
+        - name: connectors-config-volume
+          configMap:
+            name: {{ template "trino.connectors" . }}
+        {{ if .Values.exporters.jmx.enabled }}
+        - name: config-jmx-exporter
+          configMap:
+            name: {{ template "trino.jmx-exporter" . }}
+      {{ end }}
+      containers:
+        - name: {{ .Chart.Name }}-coordinator
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - mountPath: {{ .Values.server.config.path }}
+              name: config-volume
+            - mountPath: {{ .Values.server.config.path }}/catalog
+              name: connectors-config-volume
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /v1/info
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /v1/info
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+
+        {{ if .Values.exporters.jmx.enabled }}
+        - name: jmx-exporter
+          image: "{{ .Values.exporters.jmx.image.repository }}:{{ .Values.exporters.jmx.image.tag }}"
+          imagePullPolicy: {{ .Values.exporters.jmx.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.exporters.jmx.port }}
+              protocol: TCP
+              name: prom-exporter
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: prom-exporter
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 60
+            failureThreshold: 8
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: prom-exporter
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 60
+            failureThreshold: 8
+            successThreshold: 1
+          env:
+            - name: SERVICE_PORT
+              value: {{ .Values.exporters.jmx.port | quote }}
+            {{- with .Values.exporters.jmx.env }}
+            {{- range $key, $value := . }}
+            - name: {{ $key | upper | replace "." "_" }}
+              value: {{ $value | quote }}
+          {{- end }}
+          {{- end }}
+          resources:
+          {{ toYaml .Values.exporters.jmx.resources | indent 12 }}
+          volumeMounts:
+            - name: config-jmx-exporter
+              mountPath: /opt/jmx_exporter/config.yml
+              subPath: config.yml
+      {{- end }}
+
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

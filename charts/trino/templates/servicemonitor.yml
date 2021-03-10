@@ -1,0 +1,26 @@
+{{ if .Values.exporters.jmx.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "trino.fullname" . }}
+  labels:
+    app: {{ template "trino.name" . }}
+    chart: {{ template "trino.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      app: {{ template "trino.name" . }}
+      monitoring.service: jmx
+      release: {{ .Release.Name }}
+      chart: {{ template "trino.chart" . }}
+  endpoints:
+    - port: exporter
+      path: /metrics
+      interval: 10s
+  {{ end }}
+---
