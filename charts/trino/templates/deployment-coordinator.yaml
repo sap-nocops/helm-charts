@@ -60,7 +60,7 @@ spec:
               path: /v1/info
               port: http
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.coordinator.resources | nindent 12 }}
 
 
         {{ if .Values.exporters.jmx.enabled }}

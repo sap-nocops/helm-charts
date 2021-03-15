@@ -67,7 +67,7 @@ spec:
           {{end }}
 
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.worker.resources | nindent 12 }}
 
         {{ if .Values.exporters.jmx.enabled }}
         - name: jmx-exporter
