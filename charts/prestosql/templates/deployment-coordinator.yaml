@@ -40,7 +40,7 @@ spec:
         - name: config-jmx-exporter
           configMap:
             name: {{ template "presto.jmx-exporter" . }}
-      {{ end }}
+        {{ end }}
       {{- with .Values.image.pullSecrets }}
       imagePullSecrets:
           {{- toYaml . | nindent 8 }}
