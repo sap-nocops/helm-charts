@@ -1,0 +1,7 @@
+apiVersion: v2
+name: trino-loadbalancer
+description: Trino loadbalancer helm chart
+
+type: application
+version: 0.1.16
+appVersion: 0.1.6
