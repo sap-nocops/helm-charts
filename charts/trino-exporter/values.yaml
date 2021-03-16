@@ -1,8 +1,8 @@
 replicaCount: 2
 
 image:
-  repository: garugaru/presto-exporter
-  tag: cb666560e9e82d5ae36aef1e663c3d7f51cca9fc
+  repository: datappeal/trino-exporter
+  tag: latest
   pullPolicy: Always
 
 imagePullSecrets: [ ]

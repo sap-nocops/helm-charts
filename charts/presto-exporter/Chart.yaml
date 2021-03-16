@@ -1,7 +1,0 @@
-apiVersion: v2
-name: presto-exporter
-description: Presto exporter helm chart
-
-type: application
-version: 0.0.9
-appVersion: 0.0.3

@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "presto-exporter.fullname" . }}-proxy
+  name: {{ include "trino-exporter.fullname" . }}-proxy
   labels:
-  {{- include "presto-exporter.labels" . | nindent 4 }}
+  {{- include "trino-exporter.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-  {{- include "presto-exporter.selectorLabels" . | nindent 6 }}
+  {{- include "trino-exporter.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-    {{- include "presto-exporter.selectorLabels" . | nindent 8 }}
+    {{- include "trino-exporter.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
       {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "presto-exporter.serviceAccountName" . }}
+      serviceAccountName: {{ include "trino-exporter.serviceAccountName" . }}
       securityContext:
       {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
