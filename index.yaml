@@ -717,6 +717,17 @@ entries:
     urls:
     - https://github.com/The-Data-Appeal-Company/helm-charts/releases/download/trino-0.1.2/trino-0.1.2.tgz
     version: 0.1.2
+  trino-exporter:
+  - apiVersion: v2
+    appVersion: 0.0.3
+    created: "2021-03-16T17:03:38.645933792Z"
+    description: Trino exporter helm chart
+    digest: 77a556b152c9886af58e795cd84cde4b9d82c682c111c629e63016669138c51d
+    name: trino-exporter
+    type: application
+    urls:
+    - https://github.com/The-Data-Appeal-Company/helm-charts/releases/download/trino-exporter-0.0.10/trino-exporter-0.0.10.tgz
+    version: 0.0.10
   trino-loadbalancer:
   - apiVersion: v2
     appVersion: 0.1.6
