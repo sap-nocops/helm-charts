@@ -89,65 +89,65 @@ exporters:
         - 'io.airlift.stats:*'
         - 'java.lang:*'
         - 'java.nio:*'
-        - 'presto.execution:*'
-        - 'presto.execution.executor:*'
-        - 'presto.execution.resourcegroups:*'
-        - 'presto.failuredetector:*'
-        - 'presto.memory:*'
-        - 'presto.metadata:*'
-        - 'presto.plugin.hive:*'
-        - 'presto.plugin.hive.metastore.cache:*'
-        - 'presto.plugin.hive.metastore.glue:*'
+        - 'trino.execution:*'
+        - 'trino.execution.executor:*'
+        - 'trino.execution.resourcegroups:*'
+        - 'trino.failuredetector:*'
+        - 'trino.memory:*'
+        - 'trino.metadata:*'
+        - 'trino.plugin.hive:*'
+        - 'trino.plugin.hive.metastore.cache:*'
+        - 'trino.plugin.hive.metastore.glue:*'
         # Enable and add rules for thrift metastore stats if required
-        # - 'presto.plugin.hive.metastore.thrift:*'
-        - 'presto.plugin.hive.s3:*'
-        - 'presto.security:*'
-        - 'presto.sql.gen:*'
-        - 'presto.sql.planner.iterative:*'
-        - 'presto.sql.planner.optimizations:*'
+        # - 'trino.plugin.hive.metastore.thrift:*'
+        - 'trino.plugin.hive.s3:*'
+        - 'trino.security:*'
+        - 'trino.sql.gen:*'
+        - 'trino.sql.planner.iterative:*'
+        - 'trino.sql.planner.optimizations:*'
 
       rules:
         # HTTP client stats {{{
         - pattern: 'io.airlift.http.client<type=HttpClient, name=For(.+)><>(\dxx)Response.TotalCount'
-          name: 'presto_http_requests_total'
+          name: 'trino_http_requests_total'
           help: 'Number of HTTP requests made'
           type: COUNTER
           labels:
             client: '$1'
             code: '$2'
         - pattern: 'io.airlift.http.client<type=HttpClient, name=For(.+)><>ConnectionStats.(Received|Sent)Bytes'
-          name: 'presto_http_bytes_total'
+          name: 'trino_http_bytes_total'
           help: 'Bytes transferred for HTTP requests'
           type: COUNTER
           labels:
             client: '$1'
             direction: '$2'
         - pattern: 'io.airlift.http.client<type=HttpClient, name=For(.+)><>ConnectionStats.OpenConnectionCount'
-          name: 'presto_http_open_connections'
+          name: 'trino_http_open_connections'
           help: 'Number of open HTTP connections'
           type: GAUGE
           labels:
             client: '$1'
         - pattern: 'io.airlift.http.client<type=HttpClient, name=For(.+)><>ConnectionStats.MaxOpenConnections'
-          name: 'presto_http_open_connections_max'
+          name: 'trino_http_open_connections_max'
           help: 'Maximum observed number of open HTTP connections'
           type: GAUGE
           labels:
             client: '$1'
         - pattern: 'io.airlift.http.client<type=HttpClient, name=For(.+)><>QueuedRequestsPerDestination.Count'
-          name: 'presto_http_queued_requests_per_destination'
+          name: 'trino_http_queued_requests_per_destination'
           help: 'Number of HTTP requests queued per destination'
           type: GAUGE
           labels:
             client: '$1'
         - pattern: 'io.airlift.http.client<type=HttpClient, name=For(.+)><>QueuedRequestsPerDestination.Max'
-          name: 'presto_http_queued_requests_per_destination_max'
+          name: 'trino_http_queued_requests_per_destination_max'
           help: 'Maximum observed number of HTTP requests queued per destination'
           type: GAUGE
           labels:
             client: '$1'
         - pattern: 'io.airlift.http.client<type=HttpClient, name=For(.+)><>ThreadPool.(Max|Min|Busy|Idle|)Threads'
-          name: 'presto_http_thread_pool_$2_threads'
+          name: 'trino_http_thread_pool_$2_threads'
           help: '$2 threads in HTTP client thread pool'
           type: GAUGE
           labels:
@@ -156,28 +156,28 @@ exporters:
 
         # HTTP server stats {{{
         - pattern: 'io.airlift.http.server<name=HttpServer><>DaysUntilCertificateExpiration'
-          name: 'presto_http_server_certificate_expiry_days'
+          name: 'trino_http_server_certificate_expiry_days'
           help: 'Number of days until server certificate expiry'
           type: GAUGE
         - pattern: 'io.airlift.http.server<type=HttpServer><>HttpConnectionStats.(Received|Sent)Bytes'
-          name: 'presto_http_server_bytes_total'
+          name: 'trino_http_server_bytes_total'
           help: 'Bytes transferred for serving HTTP requests'
           type: COUNTER
           labels:
             direction: '$1'
         - pattern: 'io.airlift.http.server<name=HttpServer><>HttpConnectionStats.OpenConnectionCount'
-          name: 'presto_http_server_open_connections'
+          name: 'trino_http_server_open_connections'
           help: 'Number of open connections on the HTTP server'
           type: GAUGE
         - pattern: 'io.airlift.http.server<name=HttpServer><>HttpConnectionStats.MaxOpenConnections'
-          name: 'presto_http_server_open_connections_max'
+          name: 'trino_http_server_open_connections_max'
           help: 'Maximum observed number of open connections on the HTTP server'
           type: GAUGE
         # }}}
 
         # Node Info {{{
         - pattern: 'io.airlift.node<name=NodeInfo><>(Environment|ExternalAddress|InstanceId|InternalAddress|NodeId|StartTime): (.+)'
-          name: 'presto_node_info'
+          name: 'trino_node_info'
           value: 1
           help: 'A metric with constant 1 value labelled with node information'
           type: GAUGE
@@ -187,13 +187,13 @@ exporters:
 
         # JVM pause stats {{{
         - pattern: 'io.airlift.stats<name=PauseMeter><>(.+)Pauses'
-          name: 'presto_pauses_total'
+          name: 'trino_pauses_total'
           help: 'Total number of JVM pauses'
           type: COUNTER
           labels:
             bucket: '$1'
         - pattern: 'io.airlift.stats<name=PauseMeter><>TotalPauseSeconds'
-          name: 'presto_pause_seconds_total'
+          name: 'trino_pause_seconds_total'
           help: 'Total time in seconds for which JVM was paused'
           type: COUNTER
         # }}}
@@ -297,78 +297,78 @@ exporters:
         # }}}
 
         # Presto execution stats {{{
-        - pattern: 'presto.execution<name=ClusterSizeMonitor><>RequiredWorkers'
-          name: 'presto_cluster_size_monitor_required_workers'
+        - pattern: 'trino.execution<name=ClusterSizeMonitor><>RequiredWorkers'
+          name: 'trino_cluster_size_monitor_required_workers'
           help: 'Number of workers required in cluster'
           type: GAUGE
 
         # Query counts {{{
-        - pattern: 'presto.execution<name=QueryManager><>(Abandoned|Canceled|Completed|Failed|Started|Submitted)Queries.TotalCount'
-          name: 'presto_query_manager_queries_total'
+        - pattern: 'trino.execution<name=QueryManager><>(Abandoned|Canceled|Completed|Failed|Started|Submitted)Queries.TotalCount'
+          name: 'trino_query_manager_queries_total'
           help: 'Total number of queries'
           type: COUNTER
           labels:
             state: '$1'
-        - pattern: 'presto.execution<name=QueryManager><>(Queued|Running)Queries'
-          name: 'presto_query_manager_queries'
+        - pattern: 'trino.execution<name=QueryManager><>(Queued|Running)Queries'
+          name: 'trino_query_manager_queries'
           help: 'Number of queries currently in the labelled state'
           type: GAUGE
           labels:
             state: '$1'
         # }}}
 
-        - pattern: 'presto.execution<name=QueryManager><>ConsumedCpuTimeSecs.TotalCount'
-          name: 'presto_query_manager_consumed_cpu_time_seconds_total'
+        - pattern: 'trino.execution<name=QueryManager><>ConsumedCpuTimeSecs.TotalCount'
+          name: 'trino_query_manager_consumed_cpu_time_seconds_total'
           help: 'Total CPU time consumed across all queries in seconds'
           type: COUNTER
-        - pattern: 'presto.execution<name=QueryManager><>ConsumedInputBytes.TotalCount'
-          name: 'presto_query_manager_consumed_input_bytes_total'
+        - pattern: 'trino.execution<name=QueryManager><>ConsumedInputBytes.TotalCount'
+          name: 'trino_query_manager_consumed_input_bytes_total'
           help: 'Total input bytes consumed across all queries in bytes'
           type: COUNTER
-        - pattern: 'presto.execution<name=QueryManager><>ConsumedInputRows.TotalCount'
-          name: 'presto_query_manager_consumed_input_rows_total'
+        - pattern: 'trino.execution<name=QueryManager><>ConsumedInputRows.TotalCount'
+          name: 'trino_query_manager_consumed_input_rows_total'
           help: 'Total number of input rows consumed across all queries'
           type: COUNTER
 
         # CPU and Wall input byte rate histograms/summaries {{{
-        - pattern: 'presto.execution<name=QueryManager><>(CpuInputByte|WallInputBytes)Rate.AllTime.(Avg|Min|Max)'
-          name: 'presto_query_manager_$1_rate_$2'
+        - pattern: 'trino.execution<name=QueryManager><>(CpuInputByte|WallInputBytes)Rate.AllTime.(Avg|Min|Max)'
+          name: 'trino_query_manager_$1_rate_$2'
           help: '$2 rate $1'
           type: GAUGE
-        - pattern: 'presto.execution<name=QueryManager><>(CpuInputByte|WallInputBytes)Rate.AllTime.P(\d+)'
-          name: 'presto_query_manager_$1_rate'
+        - pattern: 'trino.execution<name=QueryManager><>(CpuInputByte|WallInputBytes)Rate.AllTime.P(\d+)'
+          name: 'trino_query_manager_$1_rate'
           help: '$1 rate for the labelled quantile'
           type: GAUGE
           labels:
             quantile: '0.$2'
-        - pattern: 'presto.execution<name=QueryManager><>(CpuInputByte|WallInputBytes)Rate.AllTime.Count'
-          name: 'presto_query_manager_$1_rate_count'
+        - pattern: 'trino.execution<name=QueryManager><>(CpuInputByte|WallInputBytes)Rate.AllTime.Count'
+          name: 'trino_query_manager_$1_rate_count'
           help: '$1 rate count'
           type: COUNTER
         # }}}
 
         # Execution and queued time histograms/summaries {{{
-        - pattern: 'presto.execution<name=QueryManager><>(Execution|Queued)Time.AllTime.(Avg|Min|Max)'
+        - pattern: 'trino.execution<name=QueryManager><>(Execution|Queued)Time.AllTime.(Avg|Min|Max)'
           valueFactor: 0.001
-          name: 'presto_query_manager_$1_seconds_$2'
+          name: 'trino_query_manager_$1_seconds_$2'
           help: '$2 $1 time in seconds'
           type: GAUGE
-        - pattern: 'presto.execution<name=QueryManager><>(Execution|Queued)Time.AllTime.P(\d+)'
+        - pattern: 'trino.execution<name=QueryManager><>(Execution|Queued)Time.AllTime.P(\d+)'
           valueFactor: 0.001
-          name: 'presto_query_manager_$1_seconds'
+          name: 'trino_query_manager_$1_seconds'
           help: '$1 time in seconds for the labelled quantile'
           type: GAUGE
           labels:
             quantile: '0.$2'
-        - pattern: 'presto.execution<name=QueryManager><>(Execution|Queued)Time.AllTime.Count'
+        - pattern: 'trino.execution<name=QueryManager><>(Execution|Queued)Time.AllTime.Count'
           valueFactor: 0.001
-          name: 'presto_query_manager_$1_seconds_count'
+          name: 'trino_query_manager_$1_seconds_count'
           help: '$1 time count'
           type: COUNTER
         # }}}
 
-        - pattern: 'presto.execution<name=QueryManager><>(External|InsufficientResources|Internal|UserError)Failures.TotalCount'
-          name: 'presto_query_manager_failures_total'
+        - pattern: 'trino.execution<name=QueryManager><>(External|InsufficientResources|Internal|UserError)Failures.TotalCount'
+          name: 'trino_query_manager_failures_total'
           help: 'Total number of failures with the labelled type'
           type: COUNTER
           labels:
@@ -377,15 +377,15 @@ exporters:
 
         # Presto executor stats {{{
         # MLFQ stats {{{
-        - pattern: 'presto.execution.executor<name=MultilevelSplitQueue><>Level(\d)Time'
+        - pattern: 'trino.execution.executor<name=MultilevelSplitQueue><>Level(\d)Time'
           valueFactor: 0.000000001
-          name: 'presto_multilevel_split_queue_level_time_seconds_total'
+          name: 'trino_multilevel_split_queue_level_time_seconds_total'
           help: 'Total time spent in the labelled level of the MLFQ in seconds'
           type: COUNTER
           labels:
             level: '$1'
-        - pattern: 'presto.execution.executor<name=MultilevelSplitQueue><>SelectedCountLevel(\d).TotalCount'
-          name: 'presto_multilevel_split_queue_level_selected_total'
+        - pattern: 'trino.execution.executor<name=MultilevelSplitQueue><>SelectedCountLevel(\d).TotalCount'
+          name: 'trino_multilevel_split_queue_level_selected_total'
           help: 'Total number of times the labelled level was selected'
           type: COUNTER
           labels:
@@ -393,60 +393,60 @@ exporters:
         # }}}
 
         # BlockedQuantaWallTime, SplitQueuedTime, SplitWallTime and UnblockedQuantaWallTime histograms {{{
-        - pattern: 'presto.execution.executor<name=TaskExecutor><>(BlockedQuantaWallTime|SplitQueuedTime|SplitWallTime|UnblockedQuantaWallTime).AllTime.(Avg|Min|Max)'
+        - pattern: 'trino.execution.executor<name=TaskExecutor><>(BlockedQuantaWallTime|SplitQueuedTime|SplitWallTime|UnblockedQuantaWallTime).AllTime.(Avg|Min|Max)'
           valueFactor: 0.000001
-          name: 'presto_task_executor_$1_seconds_$2'
+          name: 'trino_task_executor_$1_seconds_$2'
           help: '$2 $1 in seconds'
           type: GAUGE
-        - pattern: 'presto.execution.executor<name=TaskExecutor><>(BlockedQuantaWallTime|SplitQueuedTime|SplitWallTime|UnblockedQuantaWallTime).AllTime.P(\d+)'
+        - pattern: 'trino.execution.executor<name=TaskExecutor><>(BlockedQuantaWallTime|SplitQueuedTime|SplitWallTime|UnblockedQuantaWallTime).AllTime.P(\d+)'
           valueFactor: 0.000001
-          name: 'presto_task_executor_$1_seconds'
+          name: 'trino_task_executor_$1_seconds'
           help: '$1 in seconds for the labelled quantile'
           type: GAUGE
           labels:
             quantile: '0.$2'
-        - pattern: 'presto.execution.executor<name=TaskExecutor><>(BlockedQuantaWallTime|SplitQueuedTime|SplitWallTime|UnblockedQuantaWallTime).AllTime.Count'
+        - pattern: 'trino.execution.executor<name=TaskExecutor><>(BlockedQuantaWallTime|SplitQueuedTime|SplitWallTime|UnblockedQuantaWallTime).AllTime.Count'
           valueFactor: 0.000001
-          name: 'presto_task_executor_$1_seconds_count'
+          name: 'trino_task_executor_$1_seconds_count'
           help: '$1 in seconds count'
           type: COUNTER
         # }}}
 
-        - pattern: 'presto.execution.executor<name=TaskExecutor><>(Blocked|Intermediate|Running|Waiting)Splits'
-          name: 'presto_task_executor_splits'
+        - pattern: 'trino.execution.executor<name=TaskExecutor><>(Blocked|Intermediate|Running|Waiting)Splits'
+          name: 'trino_task_executor_splits'
           help: 'Number of splits in the labelled state'
           type: GAUGE
           labels:
             state: '$1'
-        - pattern: 'presto.execution.executor<name=TaskExecutor><>TotalSplits'
-          name: 'presto_task_executor_splits_total'
+        - pattern: 'trino.execution.executor<name=TaskExecutor><>TotalSplits'
+          name: 'trino_task_executor_splits_total'
           help: 'Total number of splits'
           type: COUNTER
 
         # Intermediate and Leaf splits CPU, scheduled, wait and wall times histograms {{{
-        - pattern: 'presto.execution.executor<name=TaskExecutor><>(IntermediateSplitCpu|IntermediateSplitScheduled|IntermediateSplitWait|IntermediateSplitWall|LeafSplitCpu|LeafSplitScheduled|LeafSplitWait|LeafSplitWall)Time.(Avg|Min|Max)'
+        - pattern: 'trino.execution.executor<name=TaskExecutor><>(IntermediateSplitCpu|IntermediateSplitScheduled|IntermediateSplitWait|IntermediateSplitWall|LeafSplitCpu|LeafSplitScheduled|LeafSplitWait|LeafSplitWall)Time.(Avg|Min|Max)'
           valueFactor: 0.000001
-          name: 'presto_task_executor_$1_seconds_$2'
+          name: 'trino_task_executor_$1_seconds_$2'
           help: '$2 $1 in seconds'
           type: GAUGE
-        - pattern: 'presto.execution.executor<name=TaskExecutor><>(IntermediateSplitCpu|IntermediateSplitScheduled|IntermediateSplitWait|IntermediateSplitWall|LeafSplitCpu|LeafSplitScheduled|LeafSplitWait|LeafSplitWall)Time.P(\d+)'
+        - pattern: 'trino.execution.executor<name=TaskExecutor><>(IntermediateSplitCpu|IntermediateSplitScheduled|IntermediateSplitWait|IntermediateSplitWall|LeafSplitCpu|LeafSplitScheduled|LeafSplitWait|LeafSplitWall)Time.P(\d+)'
           valueFactor: 0.000001
-          name: 'presto_task_executor_$1_seconds'
+          name: 'trino_task_executor_$1_seconds'
           help: '$1 in seconds for the labelled quantile'
           type: GAUGE
           labels:
             quantile: '0.$2'
-        - pattern: 'presto.execution.executor<name=TaskExecutor><>(IntermediateSplitCpu|IntermediateSplitScheduled|IntermediateSplitWait|IntermediateSplitWall|LeafSplitCpu|LeafSplitScheduled|LeafSplitWait|LeafSplitWall)Time.Count'
+        - pattern: 'trino.execution.executor<name=TaskExecutor><>(IntermediateSplitCpu|IntermediateSplitScheduled|IntermediateSplitWait|IntermediateSplitWall|LeafSplitCpu|LeafSplitScheduled|LeafSplitWait|LeafSplitWall)Time.Count'
           valueFactor: 0.000001
-          name: 'presto_task_executor_$1_seconds_count'
+          name: 'trino_task_executor_$1_seconds_count'
           help: '$1 in seconds count'
           type: COUNTER
         # }}}
         # }}}
 
         # Presto resource group stats {{{
-        - pattern: 'presto.execution.resourcegroups<type=InternalResourceGroup, name=(.+)><>(HardConcurrencyLimit|MaxQueuedQueries|QueuedQueries|RunningQueries|WaitingQueuedQueries)'
-          name: 'presto_resourcegroups_$2'
+        - pattern: 'trino.execution.resourcegroups<type=InternalResourceGroup, name=(.+)><>(HardConcurrencyLimit|MaxQueuedQueries|QueuedQueries|RunningQueries|WaitingQueuedQueries)'
+          name: 'trino_resourcegroups_$2'
           help: '$2 for the labelled resource group name'
           type: GAUGE
           labels:
@@ -454,43 +454,43 @@ exporters:
         # }}}
 
         # Presto cluster size {{{
-        - pattern: 'presto.failuredetector<name=HeartbeatFailureDetector><>(Active|Failed|Total)Count'
-          name: 'presto_failuredetector_$1_nodes'
+        - pattern: 'trino.failuredetector<name=HeartbeatFailureDetector><>(Active|Failed|Total)Count'
+          name: 'trino_failuredetector_$1_nodes'
           help: 'Number of $1 nodes observed by the failure detector'
           type: GAUGE
         # }}}
 
         # Presto memory stats {{{
-        - pattern: 'presto.memory<name=ClusterMemoryManager><>Cluster(MemoryBytes|TotalMemoryReservation|UserMemoryReservation)'
-          name: 'presto_cluster_memory_manager_$1_bytes'
+        - pattern: 'trino.memory<name=ClusterMemoryManager><>Cluster(MemoryBytes|TotalMemoryReservation|UserMemoryReservation)'
+          name: 'trino_cluster_memory_manager_$1_bytes'
           help: 'Cluster $1 in bytes'
           type: GAUGE
-        - pattern: 'presto.memory<name=ClusterMemoryManager><>TotalAvailableProcessors'
-          name: 'presto_cluster_memory_manager_available_processors'
+        - pattern: 'trino.memory<name=ClusterMemoryManager><>TotalAvailableProcessors'
+          name: 'trino_cluster_memory_manager_available_processors'
           help: 'Cluster total available CPU cores'
           type: GAUGE
-        - pattern: 'presto.memory<name=ClusterMemoryManager><>(NumberOfLeakedQueries|QueriesKilledDueToOutOfMemory)'
-          name: 'presto_cluster_memory_manager_$1_total'
+        - pattern: 'trino.memory<name=ClusterMemoryManager><>(NumberOfLeakedQueries|QueriesKilledDueToOutOfMemory)'
+          name: 'trino_cluster_memory_manager_$1_total'
           help: 'Total $1'
           type: COUNTER
 
         # Cluster wide memory pools
-        - pattern: 'presto.memory<type=ClusterMemoryPool, name=(.+)><>(AssignedQueries|BlockedNodes|Nodes)'
-          name: 'presto_cluster_memory_pool_$2'
+        - pattern: 'trino.memory<type=ClusterMemoryPool, name=(.+)><>(AssignedQueries|BlockedNodes|Nodes)'
+          name: 'trino_cluster_memory_pool_$2'
           help: '$1 in the labelled cluster memory pool'
           type: GAUGE
           labels:
             pool: '$1'
-        - pattern: 'presto.memory<type=ClusterMemoryPool, name=(.+)><>(Free|Reserved|ReservedRevocable|Total)DistributedBytes'
-          name: 'presto_cluster_memory_pool_$2_distributed_bytes'
+        - pattern: 'trino.memory<type=ClusterMemoryPool, name=(.+)><>(Free|Reserved|ReservedRevocable|Total)DistributedBytes'
+          name: 'trino_cluster_memory_pool_$2_distributed_bytes'
           help: '$1 distributed memory in the labelled cluster memory pool in bytes'
           type: GAUGE
           labels:
             pool: '$1'
 
         # Local memory
-        - pattern: 'presto.memory<type=MemoryPool, name=(.+)><>(Free|Max|Reserved|ReservedRevocable)Bytes'
-          name: 'presto_memory_pool_$2_bytes'
+        - pattern: 'trino.memory<type=MemoryPool, name=(.+)><>(Free|Max|Reserved|ReservedRevocable)Bytes'
+          name: 'trino_memory_pool_$2_bytes'
           help: '$1 memory in the labelled memory pool in bytes'
           type: GAUGE
           labels:
@@ -498,44 +498,44 @@ exporters:
         # }}}
 
         # Presto metadata {{{
-        - pattern: 'presto.metadata<name=DiscoveryNodeManager><>(Active|Inactive|ShuttingDown)NodeCount'
-          name: 'presto_metadata_$1_nodes'
+        - pattern: 'trino.metadata<name=DiscoveryNodeManager><>(Active|Inactive|ShuttingDown)NodeCount'
+          name: 'trino_metadata_$1_nodes'
           help: 'Number of $1 nodes as seen by discovery service'
           type: GAUGE
         # }}}
 
         # Hive plugin stats {{{
-        - pattern: 'presto.plugin.hive<type=CachingDirectoryLister, name=(.+)><>(Hit|Miss|Request)Count'
-          name: 'presto_plugin_hive_caching_directory_lister_$2_count_total'
+        - pattern: 'trino.plugin.hive<type=CachingDirectoryLister, name=(.+)><>(Hit|Miss|Request)Count'
+          name: 'trino_plugin_hive_caching_directory_lister_$2_count_total'
           help: '$2 count of the CachingDirectoryLister for the labelled catalog'
           type: COUNTER
           labels:
             catalog: '$1'
 
         # FileFormatDataSourceStats {{{
-        - pattern: 'presto.plugin.hive<type=FileFormatDataSourceStats, name=(.+)><>(0Bto100KB|100KBto1MB|1MBto10MB|10MBPlus).AllTime.Count'
-          name: 'presto_plugin_hive_file_format_stats_count_total'
+        - pattern: 'trino.plugin.hive<type=FileFormatDataSourceStats, name=(.+)><>(0Bto100KB|100KBto1MB|1MBto10MB|10MBPlus).AllTime.Count'
+          name: 'trino_plugin_hive_file_format_stats_count_total'
           help: 'Total number of files observed with the labelled sizes for the labelled catalog'
           type: COUNTER
           labels:
             catalog: '$1'
             bucket: '$2'
 
-        - pattern: 'presto.plugin.hive<type=FileFormatDataSourceStats, name=(.+)><>ReadBytes.AllTime.(Avg|Min|Max)'
-          name: 'presto_plugin_hive_file_format_stats_read_bytes_$2'
+        - pattern: 'trino.plugin.hive<type=FileFormatDataSourceStats, name=(.+)><>ReadBytes.AllTime.(Avg|Min|Max)'
+          name: 'trino_plugin_hive_file_format_stats_read_bytes_$2'
           help: '$2 bytes read from the labelled catalog'
           type: GAUGE
           labels:
             catalog: '$1'
-        - pattern: 'presto.plugin.hive<type=FileFormatDataSourceStats, name=(.+)><>ReadBytes.AllTime.P(\d+)'
-          name: 'presto_plugin_hive_file_format_stats_read_bytes_$2'
+        - pattern: 'trino.plugin.hive<type=FileFormatDataSourceStats, name=(.+)><>ReadBytes.AllTime.P(\d+)'
+          name: 'trino_plugin_hive_file_format_stats_read_bytes_$2'
           help: 'Bytes read from the labelled catalog for the labelled quantile'
           type: GAUGE
           labels:
             catalog: '$1'
             quantile: '0.$2'
-        - pattern: 'presto.plugin.hive<type=FileFormatDataSourceStats, name=(.+)><>ReadBytes.AllTime.Total'
-          name: 'presto_plugin_hive_file_format_stats_read_bytes_sum'
+        - pattern: 'trino.plugin.hive<type=FileFormatDataSourceStats, name=(.+)><>ReadBytes.AllTime.Total'
+          name: 'trino_plugin_hive_file_format_stats_read_bytes_sum'
           help: 'Total bytes read from the labelled catalog'
           type: COUNTER
           labels:
@@ -543,21 +543,21 @@ exporters:
         # }}}
 
         # NamenodeStats {{{
-        - pattern: 'presto.plugin.hive<type=NamenodeStats, name=(.+)><>(ListLocatedStatus|RemoteIteratorNext).Time.AllTime.(Avg|Min|Max)'
-          name: 'presto_plugin_hive_namenode_$2_seconds_$3'
+        - pattern: 'trino.plugin.hive<type=NamenodeStats, name=(.+)><>(ListLocatedStatus|RemoteIteratorNext).Time.AllTime.(Avg|Min|Max)'
+          name: 'trino_plugin_hive_namenode_$2_seconds_$3'
           help: '$3 time taken by $2 in seconds for the labelled catalog'
           type: GAUGE
           labels:
             catalog: '$1'
-        - pattern: 'presto.plugin.hive<type=NamenodeStats, name=(.+)><>(ListLocatedStatus|RemoteIteratorNext).Time.AllTime.P(\d+)'
-          name: 'presto_plugin_hive_namenode_$2_seconds'
+        - pattern: 'trino.plugin.hive<type=NamenodeStats, name=(.+)><>(ListLocatedStatus|RemoteIteratorNext).Time.AllTime.P(\d+)'
+          name: 'trino_plugin_hive_namenode_$2_seconds'
           help: 'Time taken by $2 in seconds for the labelled quantile for the labelled catalog'
           type: GAUGE
           labels:
             catalog: '$1'
             quantile: '0.$3'
-        - pattern: 'presto.plugin.hive<type=NamenodeStats, name=(.+)><>(ListLocatedStatus|RemoteIteratorNext).Time.AllTime.Count'
-          name: 'presto_plugin_hive_namenode_$1_seconds_count'
+        - pattern: 'trino.plugin.hive<type=NamenodeStats, name=(.+)><>(ListLocatedStatus|RemoteIteratorNext).Time.AllTime.Count'
+          name: 'trino_plugin_hive_namenode_$1_seconds_count'
           help: 'Count of $2 for the labelled catalog'
           type: COUNTER
           labels:
@@ -565,15 +565,15 @@ exporters:
         # }}}
 
         # Hive and Glue metastore stats {{{
-        - pattern: 'presto.plugin.hive.metastore.cache<type=CachingHiveMetastore, name=(.+)><>(.+)Stats.(Hit|Miss)Rate'
-          name: 'presto_plugin_hive_metastore_$2_rate'
+        - pattern: 'trino.plugin.hive.metastore.cache<type=CachingHiveMetastore, name=(.+)><>(.+)Stats.(Hit|Miss)Rate'
+          name: 'trino_plugin_hive_metastore_$2_rate'
           help: '$3 rate for the labelled catalog and operation'
           type: GAUGE
           labels:
             catalog: '$1'
             operation: '$2'
-        - pattern: 'presto.plugin.hive.metastore.glue<type=GlueHiveMetastore, name=(.+)><>(.+)Stats.(Hit|Miss)Rate'
-          name: 'presto_plugin_hive_metastore_$2_rate'
+        - pattern: 'trino.plugin.hive.metastore.glue<type=GlueHiveMetastore, name=(.+)><>(.+)Stats.(Hit|Miss)Rate'
+          name: 'trino_plugin_hive_metastore_$2_rate'
           help: '$3 rate for the labelled catalog and operation'
           type: GAUGE
           labels:
@@ -582,32 +582,32 @@ exporters:
         # }}}
 
         # Presto S3 filesystem {{{
-        - pattern: 'presto.plugin.hive.s3<type=PrestoS3FileSystem, name=(.+), catalog=(.+)><>(.+).TotalCount'
-          name: 'presto_plugin_hive_s3_$3_count_total'
+        - pattern: 'trino.plugin.hive.s3<type=PrestoS3FileSystem, name=(.+), catalog=(.+)><>(.+).TotalCount'
+          name: 'trino_plugin_hive_s3_$3_count_total'
           help: 'Total count of $3 for the labelled catalog'
           type: COUNTER
           labels:
             catalog: '$2'
 
         # AWS API calls histograms/summaries
-        - pattern: 'presto.plugin.hive.s3<type=PrestoS3FileSystem, name=(.+), catalog=(.+)><>(.+).AllTime.(Avg|Min|Max)'
+        - pattern: 'trino.plugin.hive.s3<type=PrestoS3FileSystem, name=(.+), catalog=(.+)><>(.+).AllTime.(Avg|Min|Max)'
           valueFactor: 0.001
-          name: 'presto_plugin_hive_s3_$3_seconds_$4'
+          name: 'trino_plugin_hive_s3_$3_seconds_$4'
           help: '$4 $3 in seconds for the labelled catalog'
           type: GAUGE
           labels:
             catalog: '$2'
-        - pattern: 'presto.plugin.hive.s3<type=PrestoS3FileSystem, name=(.+), catalog=(.+)><>(.+).AllTime.P(\d+)'
+        - pattern: 'trino.plugin.hive.s3<type=PrestoS3FileSystem, name=(.+), catalog=(.+)><>(.+).AllTime.P(\d+)'
           valueFactor: 0.001
-          name: 'presto_plugin_hive_s3_$3_seconds'
+          name: 'trino_plugin_hive_s3_$3_seconds'
           help: '$3 in seconds for the labelled quantile and catalog'
           type: GAUGE
           labels:
             catalog: '$2'
             quantile: '0.$4'
-        - pattern: 'presto.plugin.hive.s3<type=PrestoS3FileSystem, name=(.+), catalog=(.+)><>(.+).AllTime.Count'
+        - pattern: 'trino.plugin.hive.s3<type=PrestoS3FileSystem, name=(.+), catalog=(.+)><>(.+).AllTime.Count'
           valueFactor: 0.001
-          name: 'presto_plugin_hive_s3_$3_seconds_count'
+          name: 'trino_plugin_hive_s3_$3_seconds_count'
           help: '$3 in seconds count for the labelled catalog'
           type: COUNTER
           labels:
@@ -616,43 +616,43 @@ exporters:
         # }}}
 
         # Presto security stats {{{
-        - pattern: 'presto.security<name=AccessControlManager><>(.+).TotalCount'
-          name: 'presto_security_$1_count_total'
+        - pattern: 'trino.security<name=AccessControlManager><>(.+).TotalCount'
+          name: 'trino_security_$1_count_total'
           help: 'Number of $1'
           type: COUNTER
         # }}}
 
         # SQL generator stats {{{
-        - pattern: 'presto.sql.gen<name=(.+)><>(.+).(Hit|Miss)Rate'
-          name: 'presto_sql_gen_$1_$2_$3_rate'
+        - pattern: 'trino.sql.gen<name=(.+)><>(.+).(Hit|Miss)Rate'
+          name: 'trino_sql_gen_$1_$2_$3_rate'
           type: GAUGE
-        - pattern: 'presto.sql.gen<name=(.+)><>(.+).RequestCount'
-          name: 'presto_sql_gen_$1_$2_request_count'
+        - pattern: 'trino.sql.gen<name=(.+)><>(.+).RequestCount'
+          name: 'trino_sql_gen_$1_$2_request_count'
           type: COUNTER
         # }}}
 
         # SQL Planner stats {{{
-        - pattern: 'presto.sql.planner.(.+)<name=(.+), rule=(.+)><>(Failures|Hits)'
-          name: 'presto_sql_planner_$2_$4'
+        - pattern: 'trino.sql.planner.(.+)<name=(.+), rule=(.+)><>(Failures|Hits)'
+          name: 'trino_sql_planner_$2_$4'
           type: COUNTER
           labels:
             rule: '$3'
 
-        - pattern: 'presto.sql.planner.(.+)<name=(.+), rule=(.+)><>Time.(Avg|Min|Max)'
+        - pattern: 'trino.sql.planner.(.+)<name=(.+), rule=(.+)><>Time.(Avg|Min|Max)'
           valueFactor: 0.000001
-          name: 'presto_sql_planner_$2_seconds_$4'
+          name: 'trino_sql_planner_$2_seconds_$4'
           type: GAUGE
           labels:
             rule: '$3'
-        - pattern: 'presto.sql.planner.(.+)<name=(.+), rule=(.+)><>Time.P(\d+)'
+        - pattern: 'trino.sql.planner.(.+)<name=(.+), rule=(.+)><>Time.P(\d+)'
           valueFactor: 0.000001
-          name: 'presto_sql_planner_$2_seconds'
+          name: 'trino_sql_planner_$2_seconds'
           type: GAUGE
           labels:
             rule: '$3'
             quantile: '0.$4'
-        - pattern: 'presto.sql.planner.(.+)<name=(.+), rule=(.+)><>Time.Count'
-          name: 'presto_sql_planner_$2_seconds_count'
+        - pattern: 'trino.sql.planner.(.+)<name=(.+), rule=(.+)><>Time.Count'
+          name: 'trino_sql_planner_$2_seconds_count'
           type: COUNTER
           labels:
             rule: '$3'
