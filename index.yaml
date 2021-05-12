@@ -3,6 +3,16 @@ entries:
   cloudwatch-exporter:
   - apiVersion: v2
     appVersion: 0.0.2
+    created: "2021-05-12T12:27:55.102979936Z"
+    description: AWS Cloudwatch exporter
+    digest: fd72a402270ce2d6a98165f5b95a91e4f90fa9d494a3a0f9b899a0452cd31ab6
+    name: cloudwatch-exporter
+    type: application
+    urls:
+    - https://github.com/The-Data-Appeal-Company/helm-charts/releases/download/cloudwatch-exporter-0.0.4/cloudwatch-exporter-0.0.4.tgz
+    version: 0.0.4
+  - apiVersion: v2
+    appVersion: 0.0.2
     created: "2021-05-12T10:45:20.790624431Z"
     description: AWS Cloudwatch exporter
     digest: 07e91fe9f93b9ad626ec8050bdef8759ef6a982642642bea77297e36939e326c
