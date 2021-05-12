@@ -666,6 +666,17 @@ entries:
     urls:
     - https://github.com/The-Data-Appeal-Company/helm-charts/releases/download/presto-loadbalancer-0.1.0/presto-loadbalancer-0.1.0.tgz
     version: 0.1.0
+  rds-exporter:
+  - apiVersion: v2
+    appVersion: 0.0.2
+    created: "2021-05-12T10:19:29.678952981Z"
+    description: RDS exporter
+    digest: 50e9e06013e11cfa277e9760c8e0b333c2d6471ff3cc12d45f9396b5de2b9603
+    name: rds-exporter
+    type: application
+    urls:
+    - https://github.com/The-Data-Appeal-Company/helm-charts/releases/download/rds-exporter-0.0.2/rds-exporter-0.0.2.tgz
+    version: 0.0.2
   trino:
   - apiVersion: v2
     appVersion: "353"
