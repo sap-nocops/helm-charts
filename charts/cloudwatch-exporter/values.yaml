@@ -5,7 +5,7 @@ args: [
 ]
 
 image:
-  repository: garugaru/cloudwatch-exporter
+  repository: garugaru/aws-cloudwatch-exporter
   tag: latest
   pullPolicy: Always
 
