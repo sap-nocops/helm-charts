@@ -4,6 +4,9 @@ args: [
     "--cloudwatch-namespace=AWS/RDS"
 ]
 
+awsAccessKeyId: ""
+awsSecretAccessKey: ""
+
 image:
   repository: garugaru/aws-cloudwatch-exporter
   tag: latest
