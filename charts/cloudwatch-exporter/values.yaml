@@ -6,6 +6,7 @@ args: [
 
 awsAccessKeyId: ""
 awsSecretAccessKey: ""
+awsRegion: "eu-west-1"
 
 image:
   repository: garugaru/aws-cloudwatch-exporter
