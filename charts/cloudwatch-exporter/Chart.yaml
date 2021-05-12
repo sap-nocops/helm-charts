@@ -3,5 +3,5 @@ name: cloudwatch-exporter
 description: AWS Cloudwatch exporter
 
 type: application
-version: 0.0.5
+version: 0.0.6
 appVersion: 0.0.2

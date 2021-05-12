@@ -27,7 +27,10 @@ spec:
           {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          args: {{ .Values.args }}
+          args:
+          {{- range .Values.args }}
+            - {{ . }}
+          {{- end }}
           env:
             - name: AWS_ACCESS_KEY_ID
               value: {{ .Values.awsAccessKeyId }}
