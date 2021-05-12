@@ -1,6 +1,6 @@
 apiVersion: v2
-name: rds-exporter
-description: RDS exporter
+name: cloudwatch-exporter
+description: AWS Cloudwatch exporter
 
 type: application
 version: 0.0.2

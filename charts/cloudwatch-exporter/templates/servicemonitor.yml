@@ -2,16 +2,16 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ include "rds-exporter.fullname" . }}
+  name: {{ include "cloudwatch-exporter.fullname" . }}
   labels:
-  {{- include "rds-exporter.labels" . | nindent 4 }}
+  {{- include "cloudwatch-exporter.labels" . | nindent 4 }}
 spec:
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}
   selector:
     matchLabels:
-  {{- include "rds-exporter.labels" . | nindent 8 }}
+  {{- include "cloudwatch-exporter.labels" . | nindent 8 }}
   endpoints:
     - port: http
       path: /metrics
