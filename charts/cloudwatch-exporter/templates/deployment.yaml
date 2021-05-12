@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "cloudwatch-exporter.fullname" . }}-proxy
+  name: {{ include "cloudwatch-exporter.fullname" . }}
   labels:
   {{- include "cloudwatch-exporter.labels" . | nindent 4 }}
 spec:
