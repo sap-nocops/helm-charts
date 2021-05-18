@@ -26,8 +26,8 @@ server:
     additional_params: {}
 
   jvm:
-    maxMemoryPercentage: "90"
-    minMemoryPercentage: "80"
+    maxMemoryPercentage: "80"
+    minMemoryPercentage: "70"
     additional_params: []
     gcMethod:
       type: "UseG1GC"
