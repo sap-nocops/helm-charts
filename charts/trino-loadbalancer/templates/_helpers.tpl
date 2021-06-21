@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "presto-loadbalancer.name" -}}
+{{- define "trino-loadbalancer.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "presto-loadbalancer.fullname" -}}
+{{- define "trino-loadbalancer.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -27,16 +27,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "presto-loadbalancer.chart" -}}
+{{- define "trino-loadbalancer.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Common labels
 */}}
-{{- define "presto-loadbalancer.labels" -}}
-helm.sh/chart: {{ include "presto-loadbalancer.chart" . }}
-{{ include "presto-loadbalancer.selectorLabels" . }}
+{{- define "trino-loadbalancer.labels" -}}
+helm.sh/chart: {{ include "trino-loadbalancer.chart" . }}
+{{ include "trino-loadbalancer.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -46,17 +46,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "presto-loadbalancer.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "presto-loadbalancer.name" . }}
+{{- define "trino-loadbalancer.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "trino-loadbalancer.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "presto-loadbalancer.serviceAccountName" -}}
+{{- define "trino-loadbalancer.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create -}}
-    {{ default (include "presto-loadbalancer.fullname" .) .Values.serviceAccount.name }}
+    {{ default (include "trino-loadbalancer.fullname" .) .Values.serviceAccount.name }}
 {{- else -}}
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}

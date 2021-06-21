@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "presto-loadbalancer.fullname" . }}
+  name: {{ include "trino-loadbalancer.fullname" . }}
   labels:
-    {{- include "presto-loadbalancer.labels" . | nindent 4 }}
+    {{- include "trino-loadbalancer.labels" . | nindent 4 }}
   {{- with .Values.service.annotations }}
   annotations:
   {{- toYaml . | nindent 4 }}
@@ -16,4 +16,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "presto-loadbalancer.selectorLabels" . | nindent 4 }}
+    {{- include "trino-loadbalancer.selectorLabels" . | nindent 4 }}

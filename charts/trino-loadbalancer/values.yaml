@@ -70,6 +70,9 @@ discovery:
   enabled: false
   delay: 600s
 
+controller:
+  enabled: false
+  delay: 10s
 
 config:
   proxy:
@@ -77,10 +80,15 @@ config:
 
   routing:
     rule: round-robin
+    users:
+      default:
+        behaviour: default
+        cluster: {}
+      rules: []
 
   clusters:
     sync:
-      delay: 600s
+      delay: 10s
     statistics:
       enabled: true
       delay: 5s
@@ -93,15 +101,60 @@ config:
       db: 'postgres'
       host: '127.0.0.1'
       port: 5432
-      username: 'prestohub'
-      password: 'presto'
+      username: 'trinohub'
+      password: 'trino'
       ssl_mode: 'disable'
+
+  discovery:
+    providers:
+      - provider: static
+        enabled: false
+        static:
+          clusters:
+            - name: cluster-0
+              enabled: true
+              url: http://localhost:8080
+              tags:
+                local: true
+                env: dev
+
+      - provider: aws-emr
+        enabled: false
+        aws:
+          access_key_id: ''
+          secret_key: ''
+          region: 'eu-west-1'
+      - provider: k8s
+        enabled: false
+        k8s:
+          kube_config: 'tdac-test'
+          cluster_domain: 'cluster.local'
+          selector_tags:
+            component: 'coordinator'
+            deployment: 'trino'
+
+  controller:
+    features:
+      slow_worker_drainer:
+        enabled: false
+        gracePeriodSeconds: 300
+        dryRun: true
+        drainThreshold: 3
+        provider: k8s
+        k8s:
+          namespaceSelector: { }
+        analyzer:
+          std_deviation_ratio: 3
+
+  notifier:
+    slack:
+      webhook: ""
 
   session:
     store:
       redis:
         opts:
-          prefix: 'presto::'
+          prefix: 'trino::'
           max_ttl: 24h
 
         standalone:
@@ -110,10 +163,9 @@ config:
           password: ''
           db: 0
 
-  discovery:
-    enabled: true
-    type: aws-emr
-    aws:
-      access_key_id: ''
-      secret_key: ''
-      region: 'eu-west-1'
+        sentinel:
+          enabled: false
+          master: 'mymaster'
+          hosts: [ '','' ]
+          password: ''
+          db: 0

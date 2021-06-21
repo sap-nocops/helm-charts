@@ -10,6 +10,6 @@ To release just modify charts and push on *master* branch, **DO NOT CREATE TAGS 
 
 ## Charts 
 
-### presto-loadbalancer
+### trino-loadbalancer
 
-[![Artifact HUB](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/presto-loadbalancer)](https://artifacthub.io/packages/search?repo=presto-loadbalancer)
+[![Artifact HUB](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/trino-loadbalancer)](https://artifacthub.io/packages/search?repo=trino-loadbalancer)

@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "presto-loadbalancer.fullname" . }}-proxy
+  name: {{ include "trino-loadbalancer.fullname" . }}-proxy
   labels:
-    {{- include "presto-loadbalancer.labels" . | nindent 4 }}
+    {{- include "trino-loadbalancer.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "presto-loadbalancer.selectorLabels" . | nindent 6 }}
+      {{- include "trino-loadbalancer.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "presto-loadbalancer.selectorLabels" . | nindent 8 }}
+        {{- include "trino-loadbalancer.selectorLabels" . | nindent 8 }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-      serviceAccountName: {{ include "presto-loadbalancer.serviceAccountName" . }}
+      serviceAccountName: {{ include "trino-loadbalancer.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
