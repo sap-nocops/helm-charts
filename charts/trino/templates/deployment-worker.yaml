@@ -28,6 +28,8 @@ spec:
       {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
+        - name: plugin-volume
+          emptyDir: {}
         - name: config-volume
           configMap:
             name: {{ template "trino.worker" . }}
@@ -40,12 +42,24 @@ spec:
             name: {{ template "trino.jmx-exporter" . }}
         {{ end }}
       initContainers:
-        - name: "download-jar-plugin"
+        - name: "download-jar-trino-h3-functions-services"
           image: "mwendler/wget"
-          args: ['--no-check-certificate', 'https://github.com/The-Data-Appeal-Company/trino-functions/releases/download/v1.0/trino-functions-1.0.jar', '-P', '/config-volume/plugins']
+          args: [ '--no-check-certificate', 'https://github.com/The-Data-Appeal-Company/trino-h3-functions/releases/download/v363/trino-h3-functions-363-services.jar', '-P', {{ .Values.server.node.pluginDir }}/h3-functions ]
           volumeMounts:
-            - mountPath: {{ .Values.server.config.path }}
-              name: config-volume
+            - mountPath: {{ .Values.server.node.pluginDir }}/h3-functions
+              name: plugin-volume
+        - name: "download-jar-trino-h3-functions"
+          image: "mwendler/wget"
+          args: [ '--no-check-certificate', 'https://github.com/The-Data-Appeal-Company/trino-h3-functions/releases/download/v363/trino-h3-functions-363.jar', '-P', {{ .Values.server.node.pluginDir }}/h3-functions]
+          volumeMounts:
+            - mountPath: {{ .Values.server.node.pluginDir }}/h3-functions
+              name: plugin-volume
+        - name: "download-jar-trino-h3"
+          image: "mwendler/wget"
+          args: [ '--no-check-certificate', 'https://repo1.maven.org/maven2/com/uber/h3/3.7.1/h3-3.7.1.jar', '-P', {{ .Values.server.node.pluginDir }}/h3-functions ]
+          volumeMounts:
+            - mountPath: {{ .Values.server.node.pluginDir }}/h3-functions
+              name: plugin-volume
       containers:
         - name: {{ .Chart.Name }}-worker
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -53,6 +67,8 @@ spec:
           volumeMounts:
             - mountPath: {{ .Values.server.config.path }}
               name: config-volume
+            - mountPath: {{ .Values.server.node.pluginDir }}/h3-functions
+              name: plugin-volume
             - mountPath: {{ .Values.server.config.path }}/catalog
               name: connectors-config-volume
           ports:

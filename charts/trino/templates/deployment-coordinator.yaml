@@ -31,6 +31,8 @@ spec:
         runAsGroup: {{ .runAsGroup }}
       {{- end }}
       volumes:
+        - name: plugin-volume
+          emptyDir: {}
         - name: config-volume
           configMap:
             name: {{ template "trino.coordinator" . }}
@@ -42,6 +44,25 @@ spec:
           configMap:
             name: {{ template "trino.jmx-exporter" . }}
       {{ end }}
+      initContainers:
+        - name: "download-jar-trino-h3-functions-services"
+          image: "mwendler/wget"
+          args: [ '--no-check-certificate', 'https://github.com/The-Data-Appeal-Company/trino-h3-functions/releases/download/v363/trino-h3-functions-363-services.jar', '-P', {{ .Values.server.node.pluginDir }}/h3-functions ]
+          volumeMounts:
+            - mountPath: {{ .Values.server.node.pluginDir }}/h3-functions
+              name: plugin-volume
+        - name: "download-jar-trino-h3-functions"
+          image: "mwendler/wget"
+          args: [ '--no-check-certificate', 'https://github.com/The-Data-Appeal-Company/trino-h3-functions/releases/download/v363/trino-h3-functions-363.jar', '-P', {{ .Values.server.node.pluginDir }}/h3-functions ]
+          volumeMounts:
+            - mountPath: {{ .Values.server.node.pluginDir }}/h3-functions
+              name: plugin-volume
+        - name: "download-jar-trino-h3"
+          image: "mwendler/wget"
+          args: [ '--no-check-certificate', 'https://repo1.maven.org/maven2/com/uber/h3/3.7.1/h3-3.7.1.jar', '-P', {{ .Values.server.node.pluginDir }}/h3-functions ]
+          volumeMounts:
+            - mountPath: {{ .Values.server.node.pluginDir }}/h3-functions
+              name: plugin-volume
       containers:
         - name: {{ .Chart.Name }}-coordinator
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -51,6 +72,8 @@ spec:
               name: config-volume
             - mountPath: {{ .Values.server.config.path }}/catalog
               name: connectors-config-volume
+            - mountPath: {{ .Values.server.node.pluginDir }}/h3-functions
+              name: plugin-volume
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
